@@ -54,3 +54,9 @@ Our robot is an autonomous vehicle designed for the WRO 2025 Future Engineers co
 ## 👥 Team
 
 📸 [Team Photos](t-photos/)
+
+### 🔌 Schemes
+
+- [Wiring Diagram](schemes/Main_Scheme.png)
+- [UART Connection](schemes/UART.png)
+- [Power Distribution](schemes/POWER_FLOW.png)
