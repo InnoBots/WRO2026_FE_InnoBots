@@ -17,13 +17,13 @@ Our robot is an autonomous vehicle designed for the WRO 2025 Future Engineers co
 
 ## Repository Structure
 
--📸 t-photos
--🚗 v-photos
--🎥 videos
--🔌 schemes
--💻 src
--🛠️ models
--📚 docs
+- 📸 t-photos
+- 🚗 v-photos
+- 🎥 videos
+- 🔌 schemes
+- 💻 src
+- 🛠️ models
+- 📚 docs
 
 
 ## Robot
