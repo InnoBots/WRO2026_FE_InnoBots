@@ -22,7 +22,7 @@ Our robot is an autonomous vehicle designed for the WRO 2025 Future Engineers co
 - 📸 [t-photos](t-photos/)
 - 🚗 [v-photos](v-photos/)
 - 🎥 [videos](videos/)
-- 🔌 [schemes](schemes/)
+- 🔌 [diagrams](diagrams/)
 - 💻 [src](src/)
 - 🛠️ [models](models/)
 - 📚 [docs](docs/)
@@ -57,6 +57,6 @@ Our robot is an autonomous vehicle designed for the WRO 2025 Future Engineers co
 
 ### 🔌 Schemes
 
-- [Wiring Diagram](schemes/Main_Scheme.png)
-- [UART Connection](schemes/UART.png)
-- [Power Distribution](schemes/POWER_FLOW.png)
+- [Wiring Diagram](diagrams/Main_Scheme.png)
+- [UART Connection](diagrams/UART.png)
+- [Power Distribution](diagrams/POWER_FLOW.png)
