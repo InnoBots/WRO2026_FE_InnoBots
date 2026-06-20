@@ -32,4 +32,5 @@ Our robot is an autonomous vehicle designed for the WRO 2025 Future Engineers co
 
 ## Team
 
-![Team](t-photos/IMG-20260620-WA0009.jpg)
+![Team](t-photos/Team photo
+.jpg)
