@@ -108,6 +108,62 @@ The module sets a speed target, reads encoder pulses, estimates RPM, and adjusts
 
 The exact motor model, gearbox, wheel radius, and drivetrain arrangement should be documented alongside the mechanical files. Those details matter when calculating the torque and speed the robot can really deliver.
 
+## Drive motor: RE-260RA-2670
+
+For the drive unit, we use the **RE-260RA-2670**, with the motor data reference selecting **DC 3.0 V**. The figures below are the typical values shown in the motor's technical data sheet/reference image, not measurements taken from our assembled robot.
+
+| Motor parameter | Value at 3.0 V |
+|---|---:|
+| Operating range | DC 1.5–6.0 V |
+| No-load speed | 12,300 r/min |
+| No-load current | 0.20 A |
+| Speed at maximum efficiency | 10,200 r/min |
+| Current at maximum efficiency | 0.97 A |
+| Torque at maximum efficiency | 1.5 mN·m |
+| Output power at maximum efficiency | 1.6 W |
+| Stall torque | 8.77 mN·m |
+| Stall current | 4.73 A |
+
+### Our torque check
+
+We used the following values in our preliminary calculation:
+
+| Quantity | Value |
+|---|---:|
+| Robot mass | 0.630 kg |
+| Wheel radius | 0.022 m |
+| Rolling resistance coefficient | 0.01 |
+| Gravity | 9.81 m/s² |
+| Motor torque used in calculation | 1.70 mN·m |
+| Gearbox ratio | 17:1 |
+| Gearbox efficiency | 0.80 |
+
+**1. Rolling resistance force**
+
+Frr = Crr × m × g = 0.01 × 0.630 × 9.81 = **0.0618 N**
+
+**2. Minimum wheel torque to overcome rolling resistance**
+
+Tmin = Frr × R = 0.0618 × 0.022 = **1.356 mN·m**
+
+**3. Gearbox output torque**
+
+Tout = Tm × i × ηg = 1.70 × 17 × 0.80 = **23.12 mN·m**
+
+**4. Torque ratio**
+
+S = Tout / Tmin = 23.12 / 1.356 ≈ **17.05**
+
+This gives a preliminary torque ratio of approximately 17.05 against rolling resistance on level ground.
+
+**Engineering note:** the motor data table lists 1.5 mN·m at maximum efficiency, while our handwritten calculation uses 1.70 mN·m. We are keeping that difference visible until we confirm the source and operating point for 1.70 mN·m. Using 1.5 mN·m instead gives 20.4 mN·m gearbox output torque and a ratio of approximately 15.04.
+
+This check covers rolling resistance only. It does not prove performance under acceleration, slopes, turning, uneven surfaces, or transient loads. We also need to verify the exact gearbox arrangement and compare the motor's listed **4.73 A stall current** with the current and thermal limits of our specific DRV8833 module.
+
+The complete calculation and assumptions are documented in [Motor Selection & Torque Analysis](docs/motor-selection-and-torque.md).
+
+---
+
 ### Steering system
 
 Steering has its own source and header files:
