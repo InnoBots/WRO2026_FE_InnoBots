@@ -1,405 +1,364 @@
 # InnoBots — WRO Future Engineers 2026
 
 <p align="center">
-  <strong>Autonomous Robotics • Mechanical Engineering • Embedded Systems • Competition Documentation</strong>
+  <img src="t-photos/Team_photo.jpg" alt="The InnoBots team" width="680">
 </p>
 
 <p align="center">
-  <img src="t-photos/Team_photo.jpg" alt="InnoBots team" width="620">
+  <strong>One team. One robot. A lot of ideas, tests, fixes, and probably a few late nights.</strong>
 </p>
 
-Welcome to the official engineering repository of **InnoBots**, a team from Ibn Mandour High School in Morocco, documenting its work for the **World Robot Olympiad (WRO) Future Engineers 2026** competition.
+Hey! We're **InnoBots**, a team from **Ibn Mandour High School, Morocco**, taking on the **WRO Future Engineers 2026** challenge.
 
-This repository is intended to be the technical record of the project: the robot's mechanical design, electrical and power architecture, embedded software, testing process, design decisions, and the files needed to understand and reproduce the system. It is being developed as a living engineering document. Sections marked **To be completed** identify information or evidence that still needs to be added; they are not claims that a component or test has already been completed.
+This is where we're putting our work: the robot we're building, the code that makes it move, the mechanical and electrical choices behind it, and the things we learn along the way. We want this repository to feel like a look inside our workshop, not just a folder full of files. So we'll show the good decisions, the experiments, the problems we still need to solve, and the little details that make this robot ours.
 
----
-
-## Contents
-
-- [Project at a glance](#project-at-a-glance)
-- [The team](#the-team)
-- [Robot overview](#robot-overview)
-- [Repository structure](#repository-structure)
-- [1. Mobility and mechanical design](#1-mobility-and-mechanical-design)
-- [2. Electrical, power, and sensor architecture](#2-electrical-power-and-sensor-architecture)
-- [3. Software architecture](#3-software-architecture)
-- [4. Obstacle strategy and autonomous behaviour](#4-obstacle-strategy-and-autonomous-behaviour)
-- [5. Systems engineering and design decisions](#5-systems-engineering-and-design-decisions)
-- [Testing, calibration, and iteration](#testing-calibration-and-iteration)
-- [Reproducing the project](#reproducing-the-project)
-- [Current implementation status and next steps](#current-implementation-status-and-next-steps)
-- [Acknowledgements and project information](#acknowledgements-and-project-information)
+We're still developing the project. Some sections below describe code that is already in the repository; others are our documentation roadmap. Whenever something is not built, tested, or measured yet, we'll say so. We'd rather be honest about where we are than pretend the robot is finished.
 
 ---
 
-## Project at a glance
+## Meet the robot
 
-| Item | Current repository information |
+Five views, one machine, countless details still being improved. Here is the robot as it looks in our current photo set.
+
+<table>
+  <tr>
+    <td align="center"><strong>Front</strong><br><img src="v-photos/V-Front.jpeg" alt="Robot front view" width="300"></td>
+    <td align="center"><strong>Back</strong><br><img src="v-photos/V-Back.jpeg" alt="Robot rear view" width="300"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Left</strong><br><img src="v-photos/V-Left.jpeg" alt="Robot left view" width="300"></td>
+    <td align="center"><strong>Right</strong><br><img src="v-photos/V-Right.jpeg" alt="Robot right view" width="300"></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><strong>Top</strong><br><img src="v-photos/V-Top.jpeg" alt="Robot top view" width="420"></td>
+  </tr>
+</table>
+
+These pictures are our starting point for explaining the design. As the build changes, we'll keep the gallery updated so the documentation matches the actual robot.
+
+## The people behind InnoBots
+
+A competition robot may run on motors, batteries, and code, but a team runs on people. InnoBots is the group of students bringing this project to life: sharing ideas, building, programming, checking each other's work, and figuring things out when the first attempt doesn't go as planned.
+
+<p align="center">
+  <img src="t-photos/Team_photo.jpg" alt="InnoBots team photo" width="620">
+</p>
+
+We will add each member's name and contribution here as the team roles are finalized. We want the repository to show not only what we built, but the people and teamwork behind it.
+
+---
+
+## A quick tour of the repository
+
+| Folder / file | What's inside |
 |---|---|
-| Team | InnoBots |
-| Competition | World Robot Olympiad — Future Engineers |
-| Project season | 2026 |
-| School | Ibn Mandour High School |
-| Country | Morocco |
-| Main firmware language | Arduino C++ |
-| Firmware location | [Code/](Code/) |
-| Mechanical documentation | [Mech/](Mech/) |
-| Electrical documentation | [Elec/](Elec/) |
-| Team photographs | [t-photos/](t-photos/) |
-| Robot photographs / videos | [v-photos/](v-photos/) |
+| [Code/](Code/) | Our Arduino firmware: motor, steering, and serial communication |
+| [Mech/](Mech/) | Mechanical design files and documentation |
+| [Elec/](Elec/) | Electrical design and wiring documentation |
+| [v-photos/](v-photos/) | Robot photos from different angles |
+| [t-photos/](t-photos/) | Team photos |
+| [README.md](README.md) | You're reading it! The story and technical guide to our project |
 
-The project combines mechanical construction, motor control, embedded programming, electrical integration, and autonomous-robotics problem solving. The repository currently contains an Arduino-style firmware foundation with separate source and header files for motor control, steering, and UART communication. The mechanical and electrical folders are reserved for the supporting design files and diagrams.
-
-## The team
-
-InnoBots is the team behind this WRO Future Engineers project. The team is responsible for researching, designing, building, programming, testing, and documenting the robot.
-
-The team photograph is stored in `t-photos/Team_photo.jpg`. Individual member names, roles, and a short description of each member's engineering contribution should be added here once confirmed by the team.
-
-**Team members and responsibilities — To be completed**
-
-| Team member | Main responsibility | Contributions |
-|---|---|---|
-| To be completed | Mechanical design | CAD, chassis, steering and assembly |
-| To be completed | Electronics | Power distribution, wiring and sensors |
-| To be completed | Programming | Embedded firmware, control and testing |
-
----
-
-## Robot overview
-
-The goal of the project is to develop a robot capable of completing the WRO Future Engineers challenges while operating reliably and consistently. The design must bring together the mechanical platform, actuators, electronics, sensing, and software as one integrated system.
-
-The current public repository does not yet contain enough verified information to publish final robot dimensions, a complete bill of materials, the exact controller board, the full sensor list, or measured performance figures. Those details will be added when confirmed from the actual build and its documentation.
-
-### Robot media
-
-- Team photographs: [t-photos/](t-photos/)
-- Robot photographs and videos: [v-photos/](v-photos/)
-- Mechanical files: [Mech/](Mech/)
-- Electrical files: [Elec/](Elec/)
-
-**Robot overview images, front / rear / left / right / top / bottom — To be added.**
-
-A useful photo set should show the complete robot from multiple angles, the steering and drive mechanism, the electronics mounting, the battery location, and the sensor positions. Include captions so that another team can identify each subsystem.
-
----
-
-## Repository structure
-
-The repository is organized by engineering discipline so that readers can find the relevant implementation and supporting evidence.
+The current code folder contains these files:
 
 ```text
-WRO2026_FE_InnoBots/
-├── README.md
-├── Code/
-│   ├── main.ino
-│   ├── motor.cpp
-│   ├── motor.h
-│   ├── sterring.cpp
-│   ├── sterring.h
-│   ├── uart.cpp
-│   ├── uart.h
-│   ├── power.cpp
-│   └── power.h
-├── Elec/
-│   └── (electrical diagrams and component documentation)
-├── Mech/
-│   └── (CAD, drawings, and mechanical documentation)
-├── t-photos/
-│   └── (team photographs)
-└── v-photos/
-    └── (robot photographs and videos)
+Code/
+├── main.ino
+├── motor.cpp
+├── motor.h
+├── sterring.cpp
+├── sterring.h
+├── uart.cpp
+├── uart.h
+├── power.cpp
+└── power.h
 ```
 
-The file names shown above reflect the current firmware files. The `power.cpp` and `power.h` files are currently empty placeholders. The `Elec/` and `Mech/` folders need their final diagrams, CAD exports, and explanatory documents added.
+The spelling `sterring` is kept as it appears in the current filenames, so the links and build instructions match the repository. We may clean up the naming in a future code update.
 
 ---
 
-## 1. Mobility and mechanical design
+## 1. Mobility & mechanical design
 
-The mobility system determines how the robot moves, turns, maintains stability, and interacts with the competition field. Mechanical decisions should be explained in terms of the requirements they satisfy rather than presented only as a list of parts.
+A robot can have clever code, but if the mechanical side isn't right, none of that cleverness gets very far. The chassis, wheels, steering, motor mounting, and balance all have to work together.
 
-### Chassis and mechanical layout
+This is where we'll explain how our robot is put together and, more importantly, **why** we made those choices.
 
-**To be completed from the physical robot and CAD assembly:**
+### Chassis and layout
 
-- Chassis material, construction method, and overall layout.
-- Robot length, width, height, and mass.
-- Position of the drive system, steering system, battery, controller, and sensors.
+Our robot's mechanical documentation belongs in [Mech/](Mech/). We'll use this section to record:
+
+- Overall dimensions: length, width, and height.
+- Chassis material and how the structure is assembled.
 - Wheel type, diameter, spacing, and ground clearance.
-- How the design protects electronics and keeps components securely mounted.
-- How the layout supports access for maintenance and battery replacement.
+- Where the motors, battery, controller, and sensors are mounted.
+- How the design keeps the robot stable and protects its electronics.
+- Which parts can be removed or adjusted for maintenance.
 
-Add dimensioned drawings and clear photographs to `Mech/`. If CAD is available, include the native project files where possible, plus neutral exchange formats such as STEP and printable STL files when relevant.
+We still need to add the measured dimensions, material details, and CAD views here. We don't want to guess numbers that should come from the actual build.
 
-### Drive and steering
+### Drive system
 
-The firmware currently separates motor control from steering control:
+Our current firmware has a separate motor module:
 
-- `Code/motor.cpp` and `Code/motor.h` contain the drive-motor control interface.
-- `Code/sterring.cpp` and `Code/sterring.h` contain a servo-based steering interface.
+- [motor.cpp](Code/motor.cpp)
+- [motor.h](Code/motor.h)
 
-The steering source includes the Arduino Servo library and defines a servo output pin. The current implementation exposes `Init()` and `setAngle(int angle)`; the PID-related functions are present as interfaces but are not yet implemented as a complete steering controller.
+The module sets a speed target, reads encoder pulses, estimates RPM, and adjusts a PWM output. The code uses an encoder input on pin D3 and motor-driver signals on D5, D7, and D4.
 
-**Mechanical explanation to add:** identify the actual motor and steering mechanism, explain why they were selected, describe the linkage geometry and steering range, and include photographs or CAD views of the mechanism.
+The exact motor model, gearbox, wheel radius, and drivetrain arrangement should be documented alongside the mechanical files. Those details matter when calculating the torque and speed the robot can really deliver.
 
-### Torque, speed, and mechanical trade-offs
+### Steering system
 
-A reproducible design should show how the required wheel force and speed were estimated. Add the actual robot mass, wheel radius, target speed, expected acceleration, surface assumptions, and motor/gearbox specifications before publishing numerical conclusions.
+Steering has its own source and header files:
 
-A useful calculation record should include:
+- [sterring.cpp](Code/sterring.cpp)
+- [sterring.h](Code/sterring.h)
 
-1. Required travel speed and wheel rotational speed.
-2. Estimated rolling resistance and acceleration demand.
-3. Required wheel torque, including the chosen safety margin.
-4. Gear ratio and drivetrain efficiency, where applicable.
-5. Comparison between calculated requirements and the selected motor's specifications.
+The current implementation uses the Arduino Servo library and provides a `setAngle(int angle)` function. The PID-related functions are declared, but the steering PID routine is not yet implemented.
 
-**No torque, speed, or drivetrain measurements are currently documented in this repository.** Do not treat example calculations as measured robot performance.
+We'll add photos or CAD drawings of the steering linkage, its range of motion, and the reason for the geometry we choose. A good steering system isn't just one that turns; it should turn predictably and repeatably.
+
+### The numbers behind the design
+
+We still need to publish verified calculations for:
+
+1. Required wheel speed based on our target robot speed.
+2. Required wheel torque based on robot mass, wheel radius, and expected resistance.
+3. Gear ratio and drivetrain efficiency, if a gearbox is used.
+4. The safety margin between calculated needs and the motor's specifications.
+
+We'll include the component datasheets and our assumptions with the calculations. If a value is estimated, we'll label it as an estimate; if we measure it, we'll show the test.
 
 ---
 
-## 2. Electrical, power, and sensor architecture
+## 2. Electronics, power & sensors
 
-This section should explain how electrical energy reaches each subsystem, how control signals are distributed, and how sensors provide information to the controller.
+The electrical system is the nervous system of the robot. It connects the controller, motors, sensors, and battery. Neat wiring is not just about making the robot look good: it makes debugging easier and helps avoid failures when the robot is moving.
 
-### Current firmware pin references
+Our electrical documentation will live in [Elec/](Elec/).
 
-The existing source code defines the following pin assignments. These are **software constants found in the current code**, not a verified wiring diagram:
+### Pin assignments currently found in the code
 
-| Function | Pin in source | File |
+These are the pin numbers defined in the firmware right now. They still need to be checked against the real wiring diagram.
+
+| Function | Pin | Source file |
 |---|---:|---|
-| Motor encoder input | D3 | `Code/motor.cpp` |
-| Motor driver enable / PWM | D5 | `Code/motor.cpp` |
-| Motor driver direction input 1 | D7 | `Code/motor.cpp` |
-| Motor driver direction input 2 | D4 | `Code/motor.cpp` |
-| Steering servo signal | D5 | `Code/sterring.cpp` |
+| Motor encoder | D3 | `motor.cpp` |
+| Motor driver enable / PWM | D5 | `motor.cpp` |
+| Motor direction input 1 | D7 | `motor.cpp` |
+| Motor direction input 2 | D4 | `motor.cpp` |
+| Steering servo signal | D5 | `sterring.cpp` |
 
-**Important integration issue:** the current source assigns D5 to both the motor driver's enable/PWM signal and the steering servo signal. Confirm the actual board and wiring, then resolve this pin conflict before treating the firmware as a working integrated configuration. Update the code and wiring diagram together so that they remain consistent.
+**One thing we need to fix:** D5 is currently assigned to both the motor driver's PWM/enable signal and the steering servo signal. That is a pin conflict in the source code. We'll confirm the actual board and wiring, choose separate pins, and update the code and diagram together before calling the setup complete.
 
-### Power distribution
+### Power system
 
-The repository contains `Code/power.cpp` and `Code/power.h`, but both are currently empty. A complete power design has not yet been documented here.
+The files [power.cpp](Code/power.cpp) and [power.h](Code/power.h) are currently empty placeholders. We haven't documented a verified power architecture in the repository yet.
 
-Add a power diagram that identifies:
+The finished documentation will show:
 
-- Battery chemistry, nominal voltage, capacity, and protection method.
-- Main power switch, fuse, and emergency power-disconnection method.
-- Voltage regulators or DC/DC converters and their output rails.
-- Which rail supplies the controller, motor driver, steering actuator, and sensors.
-- Expected and measured current draw for each subsystem.
-- Common-ground and signal-reference arrangements.
-- Wire gauge, connectors, and any protection against reverse polarity or short circuits.
+- Battery type, voltage, and capacity.
+- Main switch, fuse, and protection method.
+- Voltage regulators and the devices connected to each power rail.
+- Motor-driver and servo power requirements.
+- Expected and measured current draw.
+- Ground connections, connectors, and wire routing.
 
-A power budget should use the real component datasheets and measured current values. State whether each value is a datasheet maximum, a design estimate, or a measurement taken during testing.
+We'll also add a power budget. It will distinguish between datasheet maximums, estimates, and measurements from our own tests. No made-up runtime promises!
 
-### Sensors and calibration
+### Sensors
 
-The current source files show an encoder input used for motor-speed feedback. They do not yet document a complete sensor suite or a field-perception system.
+The motor encoder input is visible in the current code. A complete sensor list and placement diagram are not yet documented.
 
-For every sensor used on the physical robot, add its model, purpose, interface, mounting position, field of view or measurement range, update rate, and calibration procedure. Explain why its location is appropriate for the robot's geometry and the competition field.
-
-**Sensor inventory, placement diagram, calibration procedure, and wiring diagram — To be completed.**
-
-Store readable electrical schematics in `Elec/` and link them here. Include a high-resolution PNG or PDF preview so evaluators can inspect the connections without installing specialist software.
+For every sensor we use, we'll explain what it does, why we chose it, where it is mounted, what range or field of view it covers, and how we calibrate it. We'll also explain how its position relates to the robot and the WRO field.
 
 ---
 
-## 3. Software architecture
+## 3. Software — making the robot move
 
-The firmware is written in Arduino C++ and is divided into source/header pairs. This separation is intended to keep the main program, motor functions, steering functions, and serial communication easier to understand and maintain.
+Now for the part that gives the hardware instructions. Our firmware is written in Arduino C++ and split into modules instead of putting everything into one enormous file. That makes it easier to work on one part without losing track of the rest.
 
-### Firmware modules
+### Main program — `main.ino`
 
-| File | Responsibility visible in the current source |
-|---|---|
-| `Code/main.ino` | Calls motor and UART initialization and runs the current motor test loop |
-| `Code/motor.h` / `Code/motor.cpp` | Motor initialization, direction, encoder pulse timing, RPM estimate, PWM output, and speed-control gains |
-| `Code/sterring.h` / `Code/sterring.cpp` | Servo initialization and angle command interface; PID steering routine is unfinished |
-| `Code/uart.h` / `Code/uart.cpp` | Serial initialization and basic line-based send/receive functions |
-| `Code/power.h` / `Code/power.cpp` | Reserved for power-related code; currently empty |
-
-### Motor speed feedback
-
-The motor module attaches an interrupt to the encoder input. Each rising edge records a timestamp using `micros()`, and the time between consecutive pulses is stored as the pulse period. The `currentRpm()` function estimates rotational speed from that period and returns zero when no recent pulse has been received.
-
-The conversion in the current source uses a factor of 10 in the RPM calculation. This implies an assumed encoder pulse count of 10 per revolution in the calculation; confirm the encoder's actual pulses per revolution and any gearbox relationship before relying on the reported RPM.
-
-### Motor control loop
-
-The `motorRun()` function checks the elapsed time and updates the motor command approximately every 50 milliseconds. It compares the requested speed with the measured RPM, calculates an error and a change-in-speed term, updates the PWM command, constrains the output to the 0–255 range, and writes the result to the motor driver's enable pin.
-
-The gains can be changed through `setKp()` and `setKd()`. The current values in the main test loop are test settings, not evidence of a fully tuned controller. Record the tuning method, test conditions, and measured response before describing the controller as validated.
-
-### Main program and current test behaviour
-
-The current `main.ino` performs these actions:
+The current [main.ino](Code/main.ino) does a basic motor test:
 
 1. Initializes the motor module.
-2. Initializes UART serial communication.
+2. Initializes serial communication.
 3. Sets the motor direction.
-4. Repeatedly sends the measured motor speed over serial.
-5. Sets the proportional gain to 0.5, requests a speed setpoint of 200, and calls the motor update function.
+4. Sends the measured motor speed over serial.
+5. Sets a speed target and calls the motor update function repeatedly.
 
-This is a motor-control test loop. The current main program does not yet demonstrate a complete WRO autonomous navigation strategy, obstacle detection pipeline, lap logic, or parking state machine.
+This is a starting test program, not yet the complete autonomous competition program.
 
-### Serial communication
+### Motor control — `motor.cpp`
 
-The UART module starts serial communication at **115200 baud** and provides a line-based send function. The receive function reads incoming text until a newline character is found. A complete communication protocol should document message format, units, valid ranges, update frequency, timeout behaviour, and how invalid or missing commands are handled.
+The motor module is currently the most developed part of the firmware.
 
-### Software flow and autonomous logic
+It uses an encoder interrupt to record the time between pulses. The function `currentRpm()` uses that pulse period to estimate the motor's rotational speed. If no recent pulse is detected, it reports zero.
 
-**To be completed:** add a flowchart for the final program, explain the states and transitions, and document how the robot decides what to do in each competition situation. If lane following, obstacle avoidance, or parking is implemented in later code, link the exact source files and explain the algorithm and its edge cases here.
+The `motorRun()` function updates the PWM command about every 50 ms. It compares the target speed with the measured speed, calculates an error and a derivative term, adjusts the PWM value, limits it to the 0–255 range, and sends it to the motor driver.
 
----
+We can change the control gains using `setKp()` and `setKd()`. The values in `main.ino` are currently test values; we still need to document proper tuning and measured results.
 
-## 4. Obstacle strategy and autonomous behaviour
+**A detail worth checking:** the RPM formula includes a factor of 10, which assumes a particular number of encoder pulses per revolution. We need to confirm the encoder specification (and gearbox relationship, if applicable) before treating the RPM reading as calibrated.
 
-A strong autonomous strategy must connect observations from the field to safe movement decisions. This section should describe the actual implemented strategy and should be updated as the software develops.
+### Steering — `sterring.cpp`
 
-Document the following for the final robot:
+The steering module currently attaches a servo and lets the program request an angle. The PID function is only a placeholder at this stage. Once the final steering control is implemented, we'll explain how the target angle is selected and how we keep the steering response stable.
 
-- How the robot detects the track boundaries and estimates its position.
-- How it identifies obstacles and determines a safe passing side.
-- How it chooses between normal lane following and obstacle avoidance.
-- How it handles corners, narrow passages, unexpected readings, and blocked paths.
-- How it detects and performs the required parking manoeuvre.
-- What happens when a sensor reading is missing, inconsistent, or outside its expected range.
-- Which safety action has priority when two behaviours request conflicting movements.
+### UART communication — `uart.cpp`
 
-Include a state-machine diagram or flowchart and annotated images from real tests. Explain the input, decision, and output for each important state.
+The UART module starts serial communication at **115200 baud**. It can send a line of text and read incoming text until a newline.
 
-**Status:** the current committed firmware does not yet contain enough code to substantiate a completed obstacle-avoidance or autonomous-navigation algorithm. This section is therefore a documentation plan, not a claim that these behaviours are already implemented.
+The next step is to define a proper message format: what each message means, what units it uses, how often it is sent, and what the robot should do if a message is missing or invalid.
 
----
+### What comes next in software?
 
-## 5. Systems engineering and design decisions
+The final software documentation will include a flowchart and explain the real logic used for:
 
-The robot is a system of connected subsystems. A change to one part can affect other parts: motor selection affects the power budget and chassis layout; sensor placement affects detection quality and mounting; controller pin assignments affect wiring and software integration.
+- Following the track and staying within the course.
+- Detecting and passing obstacles.
+- Handling corners and unexpected sensor readings.
+- Deciding which movement command has priority.
+- Completing the parking manoeuvre.
+- Recovering safely when something doesn't go as expected.
 
-For each important design decision, record:
-
-| Decision | Options considered | Reason for final choice | Evidence / trade-off |
-|---|---|---|---|
-| Drive motor and drivetrain | To be completed | To be completed | Datasheet calculation and driving tests |
-| Steering mechanism | To be completed | To be completed | Turning radius and repeatability tests |
-| Controller and electronics | To be completed | To be completed | I/O, processing, power and integration needs |
-| Sensor selection and placement | To be completed | To be completed | Field coverage and calibration results |
-| Battery and power regulation | To be completed | To be completed | Runtime, current draw and safety |
-
-### Constraints and risks
-
-Record the constraints that shaped the build, such as competition dimensions, available materials, component availability, battery limits, fabrication time, processing capacity, and reliability requirements.
-
-Maintain a short risk register. Example categories include loose mechanical fasteners, motor-driver overheating, low battery voltage, electrical shorts, sensor misalignment, encoder noise, and software communication timeouts. For each real risk, document its likelihood, impact, prevention method, and response.
-
-### Design iterations
-
-Do not document only the final version. Keep evidence of meaningful changes:
-
-- What problem was observed?
-- What was the suspected cause?
-- What change was made?
-- What test was repeated?
-- What result improved or became worse?
-- What decision was made after reviewing the result?
-
-Photographs of prototypes, revised CAD parts, wiring changes, and test setups make the engineering process verifiable.
+Those behaviours are not demonstrated by the current `main.ino`, so we'll add this section as the autonomous code is developed and tested.
 
 ---
 
-## Testing, calibration, and iteration
+## 4. Obstacle strategy & autonomous behaviour
 
-Testing should be repeatable. For each test, record the date, robot configuration, battery condition, environment, procedure, number of trials, and result.
+This is where the robot has to do more than simply move forward. It needs to understand what's around it, choose a sensible action, and react safely.
 
-Suggested test records:
+For the final version, we'll document the complete process from sensor input to movement:
 
-| Test | What to record | Status |
+1. **Observe:** what the sensors or camera detect.
+2. **Interpret:** how the software understands the track, walls, and obstacles.
+3. **Decide:** how it chooses a route or passing side.
+4. **Act:** how that decision becomes a motor and steering command.
+5. **Check:** how it knows whether the manoeuvre worked.
+
+We'll include a state-machine diagram, annotated test images, and examples of difficult situations. We'll also explain what happens when two behaviours disagree — for example, when an obstacle is detected but there isn't enough safe space to pass it.
+
+This part is still being developed and documented. We won't claim an obstacle algorithm is finished until the corresponding code and test evidence are here.
+
+---
+
+## 5. Engineering decisions — why we did it this way
+
+There is usually more than one way to solve a robotics problem. What matters is understanding the trade-offs and choosing a solution that works for our robot, our resources, and the competition.
+
+As the project develops, we'll keep a decision record like this:
+
+| Topic | What we'll explain |
+|---|---|
+| Drive motor | Why this motor, and how its torque and speed fit our needs |
+| Steering | Why this mechanism, and how it affects turning and stability |
+| Controller | Why it fits our inputs, outputs, and processing needs |
+| Sensors | Why each sensor is useful and where it works best |
+| Battery | Why its voltage and capacity are suitable |
+| Chassis | How dimensions, weight, and component placement affect movement |
+
+We'll also keep track of problems and changes. A useful engineering story is not "we built it and it worked." It's: **we noticed something, tried a solution, tested it, learned from the result, and improved the design.**
+
+### Risks we need to watch
+
+Some examples we'll check during integration and testing:
+
+- Loose parts or fasteners after repeated driving.
+- Motor driver or regulator overheating.
+- Battery voltage dropping too low.
+- Wiring faults or accidental shorts.
+- Encoder readings becoming noisy or inconsistent.
+- Sensor misalignment.
+- Lost or malformed serial messages.
+
+For each real issue, we'll record how we noticed it, what caused it, and what we changed to prevent it happening again.
+
+---
+
+## 6. Testing — the part that turns ideas into evidence
+
+We want the robot to work reliably, not just once when everything happens to go right. That's why testing needs to be repeatable.
+
+Here are the tests we'll document as the robot develops:
+
+| Test | What we'll measure |
+|---|---|
+| Motor speed | Requested speed compared with encoder RPM |
+| Motor response | Acceleration, steady-state error, and stopping |
+| Steering | Requested angle compared with actual wheel angle |
+| UART | Correct messages, invalid messages, and communication loss |
+| Power | Voltage and current at idle and under load |
+| Driving | Successful runs, time, and consistency |
+| Obstacle handling | Detection and safe passing results |
+| Parking | Final position and repeatability |
+
+For every test, we'll try to record the setup, battery condition, number of attempts, result, and what we changed afterward. Failed tests are part of the story too — they often teach us more than the easy wins.
+
+---
+
+## 7. Building and reproducing our robot
+
+We want another team to be able to understand how our robot is built, not just look at the final photos.
+
+When the hardware package is complete, this is how we'll organize the build information:
+
+1. **Check the parts list.** Confirm the exact motors, controller, sensors, battery, drivers, fasteners, and connectors.
+2. **Build the mechanical structure.** Use the CAD files and assembly drawings in `Mech/`.
+3. **Wire the electronics.** Follow the verified diagrams in `Elec/`. Check polarity, voltage limits, and connections before powering anything.
+4. **Prepare the firmware.** Open `Code/main.ino` in the Arduino IDE, select the correct board and port, and install the libraries used by the final code.
+5. **Test one subsystem at a time.** Start with the motor, steering, and serial connection before attempting a full run.
+6. **Record the working version.** Note the firmware revision, component versions, calibration values, and any known limitations.
+
+The repository is not yet a complete reproduction package. We still need to add the verified parts list, wiring diagrams, CAD exports, sensor details, and tested autonomous software. We'll keep improving it until the documentation matches the actual robot.
+
+---
+
+## 8. Current progress
+
+Here's our honest snapshot of where the repository stands right now.
+
+| Area | What's here | What's next |
 |---|---|---|
-| Motor speed feedback | Requested speed versus measured RPM | To be completed |
-| Motor response | Rise time, steady-state error, and stopping behaviour | To be completed |
-| Steering | Commanded angle versus measured wheel angle | To be completed |
-| UART | Valid messages, malformed messages, and communication loss | To be completed |
-| Power | Voltage and current under idle and operating conditions | To be completed |
-| Autonomous driving | Successful runs, completion time, and failure cases | To be completed |
-| Obstacle handling | Detection success and safe passing results | To be completed |
-| Parking | Position accuracy and repeatability | To be completed |
-
-Use measured results rather than statements such as "works perfectly." When a test fails, preserve the result and explain what was changed afterward. This makes the development process useful to evaluators and to anyone reproducing the robot.
-
----
-
-## Reproducing the project
-
-The goal of this repository is to make the design understandable and, once the missing files are added, reproducible by another team.
-
-### 1. Inspect the hardware documentation
-
-Start with the electrical and mechanical folders. Confirm the component list, controller model, motor-driver model, wiring, battery specifications, and CAD revision before assembling anything.
-
-### 2. Prepare the firmware
-
-The current firmware is located in `Code/`. Open `main.ino` in the Arduino IDE or another compatible Arduino development environment. Install the libraries required by the final source code; the current steering source includes the Arduino Servo library and also includes PID_v1.
-
-Select the exact board and port that match the physical controller. Verify all pin assignments against the wiring diagram before powering the robot. In particular, resolve the D5 motor-enable / servo-signal conflict currently visible in the source.
-
-### 3. Verify the motor subsystem safely
-
-With the robot secured so that its wheels cannot cause an unexpected movement, verify the motor driver wiring, encoder signal, direction, and serial output. Begin with a low command and check that the measured speed behaves plausibly. Confirm the encoder pulses-per-revolution assumption before using RPM values for calibration.
-
-### 4. Integrate and test the complete robot
-
-Connect the subsystems only after checking power polarity, voltage limits, common ground, and wiring continuity. Test one subsystem at a time, then test the integrated system on a controlled area before attempting a full competition run.
-
-### 5. Record the exact working configuration
-
-A reproducible release should identify the controller board, library versions, firmware revision, component models, wiring diagram revision, CAD files, calibration values, and known limitations. Add a release or tagged commit when a configuration has been tested successfully.
-
-**Reproduction status:** the current repository is a starting point, not yet a complete build package. A full bill of materials, verified wiring diagram, CAD exports, sensor documentation, and tested autonomous software still need to be committed.
+| Robot photos | Front, back, left, right, and top views | Add captions and update as the build changes |
+| Motor firmware | Encoder feedback and PWM speed-control structure | Verify encoder scaling and tune with test data |
+| Steering firmware | Basic servo interface | Resolve pin conflict and complete control logic |
+| UART | Basic serial send/receive functions | Define and test the message protocol |
+| Power | Placeholder files | Document the real power system |
+| Mechanical | Folder ready for design files | Add CAD, dimensions, and assembly views |
+| Electrical | Folder ready for diagrams | Add wiring, component list, and power budget |
+| Sensors | Encoder input visible in code | Add full sensor inventory and calibration |
+| Autonomous driving | Not yet demonstrated by the current main program | Document and test navigation, obstacle handling, and parking |
+| Testing | No measured results documented yet | Add repeatable tests and results |
 
 ---
 
-## Current implementation status and next steps
+## A few things we still want to do
 
-This table distinguishes files that exist from engineering evidence that is still missing.
-
-| Area | Current status | Next action |
-|---|---|---|
-| Motor firmware | Source files present | Verify encoder scaling and tune speed response |
-| Steering firmware | Basic servo interface present | Initialize it in the main program, complete control logic, and resolve pin assignment |
-| UART | Basic serial functions present | Define and test a robust message protocol |
-| Power software | Empty placeholder files | Add implementation only if required by the final architecture |
-| Mechanical design | Folder exists; detailed files not yet documented | Add CAD, dimensions, materials, and assembly views |
-| Electrical design | Folder exists; detailed diagrams not yet documented | Add wiring schematic, power budget, and component list |
-| Sensors | Encoder input appears in firmware | Document the complete sensor inventory and calibration |
-| Autonomous strategy | Not demonstrated by current main program | Add navigation, obstacle, and parking logic with flowcharts |
-| Testing | No test results documented here | Add repeatable test procedures and measured results |
-
-### Immediate engineering checklist
-
-- [ ] Confirm the exact controller board and all connected hardware.
-- [ ] Resolve the D5 pin conflict between motor PWM and steering servo.
-- [ ] Confirm encoder pulses per revolution and RPM calculation.
-- [ ] Complete and test the steering initialization and control routine.
-- [ ] Add the final wiring and power-distribution diagrams.
-- [ ] Add CAD files, dimensions, materials, and assembly instructions.
-- [ ] Document every sensor, its placement, and calibration.
-- [ ] Add autonomous state-machine and obstacle-strategy documentation.
-- [ ] Record test data, failures, fixes, and design iterations.
-- [ ] Add clear robot photographs and a reproducible bill of materials.
+- [ ] Confirm the exact controller board and hardware list.
+- [ ] Fix the D5 motor / steering pin conflict.
+- [ ] Verify encoder pulses per revolution and RPM calculations.
+- [ ] Finish and test the steering control.
+- [ ] Add mechanical CAD and dimensioned drawings.
+- [ ] Add the electrical wiring diagram and power budget.
+- [ ] Document sensor placement and calibration.
+- [ ] Build and explain the autonomous state machine.
+- [ ] Test obstacle handling and parking.
+- [ ] Add real test results, iterations, and lessons learned.
+- [ ] Keep the photos and documentation up to date.
 
 ---
 
-## Acknowledgements and project information
+## Follow our progress
 
-This repository documents the InnoBots team's WRO Future Engineers 2026 engineering project. The contents are maintained as the design and implementation evolve. Hardware specifications, diagrams, performance measurements, and software descriptions should be updated whenever the physical robot or firmware changes.
+This repository will keep changing as InnoBots keeps building. The code, photos, diagrams, and explanations should all tell the same story: what the robot looks like, how it works, and what we learned while making it work.
 
-For questions about the project, use the repository's GitHub Issues or contact the team through its school or competition channels.
-
----
+Thanks for stopping by and checking out our project. We're InnoBots, and this is our road to WRO Future Engineers 2026.
 
 <p align="center">
-  <strong>InnoBots · WRO Future Engineers 2026 · Morocco</strong><br>
-  <sub>Design carefully. Test honestly. Document everything.</sub>
+  <strong>Built by InnoBots · Ibn Mandour High School · Morocco</strong><br>
+  <em>Think together. Build together. Test. Improve. Repeat.</em>
 </p>
