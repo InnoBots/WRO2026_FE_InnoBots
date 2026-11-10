@@ -37,16 +37,13 @@ This block diagram shows the intended functional groups only. It is **not a pin-
 
 ## 3. Loads and power budget
 
-A reliable power budget needs the actual supply voltage and current for every device. The table below lists the planned loads and the information needed to complete the calculations.
+The table groups the peripherals with the controller they connect to. The power-consumption values are listed where known; values that still need datasheets or measurements are marked **TBC**.
 
-| Load | Intended supply | Current / power information |
-|---|---|---|
-| Raspberry Pi 5 | Regulated 5 V rail | Measure under the robot's real workload; verify regulator capacity |
-| Camera Module 3 | Raspberry Pi camera interface | Include its consumption in the total Pi-system load |
-| D500 LiDAR | Supply specified by its exact datasheet | Exact model, voltage and current still need confirmation |
-| MG90S servo | Regulated servo rail | Confirm supply voltage and peak/stall current |
-| Arduino Pro Mini | Regulated logic rail | Confirm whether the board is the 3.3 V or 5 V variant |
-| RE-260RA-2670 motor | Motor rail to be verified | Selected motor reference is 3.0 V; datasheet lists 0.97 A at maximum efficiency and 4.73 A stall current |
+| Component / group | Power consumption |
+|---|---|
+| Raspberry Pi 5, Camera Module 3 and D500 LiDAR | TBC — measure the complete Raspberry Pi and sensor setup under the robot's real workload; confirm the exact LiDAR model and its consumption |
+| Arduino Pro Mini and MG90S servo | TBC — confirm the Arduino board variant and measure the servo's peak/stall consumption. The Arduino controls the servo signal; power the servo from a suitable regulated supply, not from a GPIO pin |
+| RE-260RA-2670 DC motor | At 3.0 V: 0.97 A at maximum efficiency (about 2.91 W); 4.73 A at stall (about 14.19 W). Stall power is a brief worst-case value, not normal running consumption |
 ### Critical motor-supply mismatch
 
 The motor-selection reference supplied by the team identifies the **RE-260RA-2670 at DC 3.0 V**. The battery is a 2S Li-ion pack with a nominal voltage of 7.4 V and a fully charged voltage of 8.4 V. The motor must **not** be connected directly to the 2S battery unless the exact motor datasheet and final design explicitly permit that voltage. The motor-side voltage regulation or other approved supply arrangement must be confirmed and shown in the wiring diagram.
