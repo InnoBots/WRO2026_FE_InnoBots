@@ -4,18 +4,17 @@ This document describes the current power-system concept for the InnoBots robot.
 
 ## 1. Battery and protection
 
-| Parameter | Current project information | Status |
-|---|---|---|
-| Battery chemistry | 2S Li-ion (as reported by the team) | Confirm exact pack label |
-| Nominal voltage | 7.4 V (2 cells in series) | Typical for 2S Li-ion |
-| Fully charged voltage | 8.4 V (4.2 V per cell) | Confirm cell datasheet |
-| Capacity | 3000 mAh | Read from actual pack |
-| Maximum continuous discharge | 20 Z| Read from pack label/datasheet |
-| Battery management system | 2S BMS | Confirm current rating and protection functions |
-| Low-voltage cutoff | 5 V | Must follow the actual cell and BMS specifications |
+| Parameter | Current project information |
+|---|---|
+| Battery chemistry | 2S Li-ion (reported by the team; confirm the actual pack label) |
+| Nominal voltage | 7.4 V (2 cells in series) |
+| Fully charged voltage | 8.4 V (4.2 V per cell) |
+| Capacity | 3000 mAh (reported; verify on the actual pack) |
+| Maximum continuous discharge | 20 A (reported; verify on the actual pack label or datasheet) |
+| Battery management system | 2S BMS (confirm its current rating and protection functions) |
+| Low-voltage cutoff | 5 V was listed in the previous draft; confirm the correct cutoff from the battery and BMS specifications |
 
-The previous draft contained a 3000 mAh capacity and 20 A discharge rating. These values are **not confirmed by the information currently supplied by the team**, so they must not be used for a final runtime or safety claim until checked against the battery.
-
+The 3000 mAh capacity and 20 A discharge rating are **reported values, not yet verified against the actual battery**. Do not use them for a final runtime or safety claim until they have been checked.
 ## 2. Power architecture
 
 The intended system-level arrangement is:
@@ -38,17 +37,16 @@ This block diagram shows the intended functional groups only. It is **not a pin-
 
 ## 3. Loads and power budget
 
-A reliable power budget needs the actual supply voltage and current for every device. The table below separates known component names from values that still need confirmation.
+A reliable power budget needs the actual supply voltage and current for every device. The table below lists the planned loads and the information needed to complete the calculations.
 
 | Load | Intended supply | Current / power information |
-|---|---|---|---|
+|---|---|---|
 | Raspberry Pi 5 | Regulated 5 V rail | Measure under the robot's real workload; verify regulator capacity |
-| Camera Module 3 | Pi camera interface | Confirm Pi/camera connection and total system load |
-| D500 LiDAR | Per exact sensor datasheet | Exact model, voltage and current not yet confirmed |
+| Camera Module 3 | Raspberry Pi camera interface | Include its consumption in the total Pi-system load |
+| D500 LiDAR | Supply specified by its exact datasheet | Exact model, voltage and current still need confirmation |
 | MG90S servo | Regulated servo rail | Confirm supply voltage and peak/stall current |
-| Arduino Pro Mini | Regulated logic rail | Confirm 3.3 V or 5 V board variant |
-| RE-260RA-2670 motor | Motor rail to verify | Motor reference is selected at 3.0 V; data lists 0.97 A at maximum efficiency and 4.73 A stall current |
-
+| Arduino Pro Mini | Regulated logic rail | Confirm whether the board is the 3.3 V or 5 V variant |
+| RE-260RA-2670 motor | Motor rail to be verified | Selected motor reference is 3.0 V; datasheet lists 0.97 A at maximum efficiency and 4.73 A stall current |
 ### Critical motor-supply mismatch
 
 The motor-selection reference supplied by the team identifies the **RE-260RA-2670 at DC 3.0 V**. The battery is a 2S Li-ion pack with a nominal voltage of 7.4 V and a fully charged voltage of 8.4 V. The motor must **not** be connected directly to the 2S battery unless the exact motor datasheet and final design explicitly permit that voltage. The motor-side voltage regulation or other approved supply arrangement must be confirmed and shown in the wiring diagram.
