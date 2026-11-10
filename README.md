@@ -47,7 +47,36 @@ A competition robot may run on motors, batteries, and code, but a team runs on p
   <img src="t-photos/Team_photo.jpg" alt="InnoBots team photo" width="620">
 </p>
 
-We will add each member's name and contribution here as the team roles are finalized. We want the repository to show not only what we built, but the people and teamwork behind it.
+### The people behind the robot
+
+**Saad Hantar — Team Leader & Electronics**  
+Saad coordinates the team's work and takes a leading role in electronics and hardware integration, helping bring the robot's systems together.
+
+**Ziad El Yafi — Graphics & Visual Design**  
+Ziad leads the team's visual identity and graphic design, shaping how InnoBots presents its robot, its work, and its story.
+
+**Hayat Oumlil — Communications**  
+Hayat leads team communication and outreach, helping the team share its progress and represent its work clearly.
+
+These roles describe the team's current responsibilities and can evolve as the project develops. The robot is a shared effort: each member contributes to the decisions, problem-solving, and work that move the project forward.
+
+## Our journey & achievements
+
+Our story started before the competitions. The three of us studied together for three years at the same high school, in the **Science and Electrical Sciences & Technologies** branch. During that time, we built a friendship around learning, creating, and taking on technical challenges.
+
+After high school, each member continued their studies at a different school. We stayed together as a team, carrying the experience and trust we had built into new projects and competitions.
+
+Some milestones we are proud of:
+
+- **WRO 2026 — Future Engineers: 1st Place.** We earned first place together, representing the result of our shared work and preparation.
+- **WRO 2025 — Future Innovators: 3rd Place.** An earlier milestone in our competition journey.
+- **WRO Open Championship — Slovenia: Qualified.** We earned qualification for the Open Championship, although we were ultimately unable to attend.
+- **MLNC and ENSAT competitions — Winner.** We also report winning at these competitions during 2026.
+- **STMicroelectronics competition in Morocco — Winner.** Another achievement that reflects our interest in applying engineering beyond a single competition.
+
+For us, these results are not just titles. Each competition has been an opportunity to learn, work under pressure, improve our ideas, and grow as a team. We will continue adding verified event names, dates, certificates, and photos as we organize that evidence.
+
+You can also follow our updates on [Instagram — @innob.ots](https://www.instagram.com/innob.ots/).
 
 ---
 
