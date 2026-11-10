@@ -9,10 +9,10 @@ This document describes the current power-system concept for the InnoBots robot.
 | Battery chemistry | 2S Li-ion (as reported by the team) | Confirm exact pack label |
 | Nominal voltage | 7.4 V (2 cells in series) | Typical for 2S Li-ion |
 | Fully charged voltage | 8.4 V (4.2 V per cell) | Confirm cell datasheet |
-| Capacity | TBC | Read from actual pack |
-| Maximum continuous discharge | TBC | Read from pack label/datasheet |
+| Capacity | 3000 mAh | Read from actual pack |
+| Maximum continuous discharge | 20 Z| Read from pack label/datasheet |
 | Battery management system | 2S BMS | Confirm current rating and protection functions |
-| Low-voltage cutoff | TBC | Must follow the actual cell and BMS specifications |
+| Low-voltage cutoff | 5 V | Must follow the actual cell and BMS specifications |
 
 The previous draft contained a 3000 mAh capacity and 20 A discharge rating. These values are **not confirmed by the information currently supplied by the team**, so they must not be used for a final runtime or safety claim until checked against the battery.
 
@@ -40,14 +40,14 @@ This block diagram shows the intended functional groups only. It is **not a pin-
 
 A reliable power budget needs the actual supply voltage and current for every device. The table below separates known component names from values that still need confirmation.
 
-| Load | Intended supply | Current / power information | Status |
+| Load | Intended supply | Current / power information |
 |---|---|---|---|
-| Raspberry Pi 5 | Regulated 5 V rail | Measure under the robot's real workload; verify regulator capacity | TBC |
-| Camera Module 3 | Pi camera interface | Confirm Pi/camera connection and total system load | TBC |
-| D500 LiDAR | Per exact sensor datasheet | Exact model, voltage and current not yet confirmed | TBC |
-| MG90S servo | Regulated servo rail | Confirm supply voltage and peak/stall current | TBC |
-| Arduino Pro Mini | Regulated logic rail | Confirm 3.3 V or 5 V board variant | TBC |
-| RE-260RA-2670 motor | Motor rail to verify | Motor reference is selected at 3.0 V; data lists 0.97 A at maximum efficiency and 4.73 A stall current | Voltage/current integration unresolved |
+| Raspberry Pi 5 | Regulated 5 V rail | Measure under the robot's real workload; verify regulator capacity |
+| Camera Module 3 | Pi camera interface | Confirm Pi/camera connection and total system load |
+| D500 LiDAR | Per exact sensor datasheet | Exact model, voltage and current not yet confirmed |
+| MG90S servo | Regulated servo rail | Confirm supply voltage and peak/stall current |
+| Arduino Pro Mini | Regulated logic rail | Confirm 3.3 V or 5 V board variant |
+| RE-260RA-2670 motor | Motor rail to verify | Motor reference is selected at 3.0 V; data lists 0.97 A at maximum efficiency and 4.73 A stall current |
 
 ### Critical motor-supply mismatch
 
