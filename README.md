@@ -18,7 +18,7 @@ We're still developing the project. Some sections below describe code that is al
 
 ## Meet the robot
 
-Five views, one machine, countless details still being improved. Here is the robot as it looks in our current photo set.
+Six views, one machine, countless details still being improved. Here is the robot as it looks in our current photo set.
 
 <table>
   <tr>
@@ -31,6 +31,9 @@ Five views, one machine, countless details still being improved. Here is the rob
   </tr>
   <tr>
     <td colspan="2" align="center"><strong>Top</strong><br><img src="v-photos/V-Top.jpeg" alt="Robot top view" width="420"></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><strong>Bottom — Chassis Underside</strong><br><img src="v-photos/V-Bottom.jpeg" alt="Robot bottom view showing the underside of the chassis" width="420"></td>
   </tr>
 </table>
 
