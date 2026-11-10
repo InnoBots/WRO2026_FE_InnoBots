@@ -114,7 +114,7 @@ The spelling `sterring` is kept as it appears in the current filenames, so the l
 
 (1): We chose compact dimensions (W × L) to improve the car's control and maneuverability. Its relatively small size allows it to make sharper turns, navigate narrow spaces, and avoid obstacles more easily while maintaining good stability.
 
-(2) We calculated the minimum required torque based on the car's mass (650 g), wheel diameter (44 mm), and an estimated rolling resistance coefficient of 0.02 for rubber wheels on a hard surface. The rolling resistance force was approximately 127.5 mN, resulting in a minimum total wheel torque of 2.81 mN·m. This value represents the theoretical minimum torque required to keep the car moving on a flat surface at constant speed.
+(2): We calculated the minimum required torque based on the car's mass (650 g), wheel diameter (44 mm), and an estimated rolling resistance coefficient of 0.02 for rubber wheels on a hard surface. The rolling resistance force was approximately 127.5 mN, resulting in a minimum total wheel torque of 2.81 mN·m. This value represents the theoretical minimum torque required to keep the car moving on a flat surface at constant speed.
 
 <p align="center">
   <img src="docs/motor_selection.jpeg" alt="Motor selection" width="850">
