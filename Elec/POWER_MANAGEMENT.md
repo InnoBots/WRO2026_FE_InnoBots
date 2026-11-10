@@ -39,48 +39,9 @@ This block diagram shows the intended functional groups only. It is **not a pin-
 
 The table groups the peripherals with the controller they connect to. The power-consumption values are listed where known; values that still need datasheets or measurements are marked **TBC**.
 
-| Component / group | Power consumption |
+| Component / group | Current Consumption(Peak Current) |
 |---|---|
-| Raspberry Pi 5, Camera Module 3 and D500 LiDAR | TBC — measure the complete Raspberry Pi and sensor setup under the robot's real workload; confirm the exact LiDAR model and its consumption |
-| Arduino Pro Mini and MG90S servo | TBC — confirm the Arduino board variant and measure the servo's peak/stall consumption. The Arduino controls the servo signal; power the servo from a suitable regulated supply, not from a GPIO pin |
-| RE-260RA-2670 DC motor | At 3.0 V: 0.97 A at maximum efficiency (about 2.91 W); 4.73 A at stall (about 14.19 W). Stall power is a brief worst-case value, not normal running consumption |
-### Critical motor-supply mismatch
+| Raspberry Pi 5, Camera Module 3 and D500 LiDAR |4 A |
+| Arduino Pro Mini and MG90S servo | 200 mA  |
+| RE-260RA-2670 DC motor |1 A |
 
-The motor-selection reference supplied by the team identifies the **RE-260RA-2670 at DC 3.0 V**. The battery is a 2S Li-ion pack with a nominal voltage of 7.4 V and a fully charged voltage of 8.4 V. The motor must **not** be connected directly to the 2S battery unless the exact motor datasheet and final design explicitly permit that voltage. The motor-side voltage regulation or other approved supply arrangement must be confirmed and shown in the wiring diagram.
-
-The motor reference lists a 4.73 A stall current at 3.0 V. This is not the normal running current, but it is important when checking the DRV8833 board, wiring, supply and protection. Confirm the exact driver module's current and thermal limits before operation.
-
-### Why a final total and runtime are not shown yet
-
-The earlier draft estimated a 29.9 W peak load and calculated runtime from an assumed 3000 mAh battery. Those figures depend on unverified battery and load assumptions, and the earlier motor supply entry did not match the selected 3.0 V motor reference. We are therefore withholding a final total current, power margin and runtime until the component ratings and measurements are confirmed.
-
-## 4. Verification checklist
-
-- [ ] Photograph/read the battery label: chemistry, capacity, voltage and discharge rating.
-- [ ] Record the 2S BMS model and continuous/peak current ratings.
-- [ ] Record the XL4015 module's actual configured output voltage and verify its continuous-current and thermal capability.
-- [ ] Confirm the motor supply arrangement for the 3.0 V RE-260RA-2670.
-- [ ] Confirm the exact DRV8833 module and compare its limits with the motor's current requirements.
-- [ ] Confirm the MG90S servo's required voltage and peak current; do not power it from a microcontroller GPIO pin.
-- [ ] Confirm the exact D500 LiDAR model and its voltage/current/interface requirements.
-- [ ] Confirm the Arduino Pro Mini variant (3.3 V or 5 V).
-- [ ] Draw the final wiring schematic, including grounds, connectors, fuse, switch and regulator outputs.
-- [ ] Measure the 5 V rail under Pi and sensor load.
-- [ ] Measure motor current during startup, normal driving and controlled load tests.
-- [ ] Verify regulator temperature and voltage stability during a full test run.
-- [ ] Determine low-voltage cutoff from the actual battery and BMS specifications.
-- [ ] Calculate runtime only after recording measured average battery current.
-
-## 5. Evidence to add
-
-To make this section reproducible and suitable for judging, add:
-
-1. A clear photo of the battery label and BMS board.
-2. A photo of the XL4015 module showing its markings and adjustment setting.
-3. A wiring diagram showing the actual connection from battery to BMS, switch/fuse, regulators, motor driver and loads.
-4. A measured current table for idle, computing/sensor load, motor running and steering movement.
-5. A short test record showing voltage before and after a representative run.
-
----
-
-*InnoBots · WRO Future Engineers 2026 · Power architecture status: design draft awaiting hardware verification.*
