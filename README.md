@@ -83,7 +83,7 @@ Some milestones we are proud of:
   </p>
 
 - **ENSET 2026 — Winner.** Another achievement from our 2026 competition journey.
-- **STMicroelectronics competition in Morocco — Winner.** Another achievement that reflects our interest in applying engineering beyond a single competition.
+- **Nawabigh ST (STMicroelectronics competition in Morocco) — Winner.** Another achievement that reflects our interest in applying engineering beyond a single competition.
 
   <p align="center">
     <img src="t-photos/Team-Nawabigh-ST.jpg" alt="InnoBots team at the Nawabigh ST competition" width="620">
