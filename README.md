@@ -112,83 +112,19 @@ The spelling `sterring` is kept as it appears in the current filenames, so the l
 
 ## 1. Mobility & mechanical design
 
-A robot can have clever code, but if the mechanical side isn't right, none of that cleverness gets very far. The chassis, wheels, steering, motor mounting, and balance all have to work together.
+(1): We chose compact dimensions (W × L) to improve the car's control and maneuverability. Its relatively small size allows it to make sharper turns, navigate narrow spaces, and avoid obstacles more easily while maintaining good stability.
 
-This is where we'll explain how our robot is put together and, more importantly, **why** we made those choices.
-
-### Chassis and layout
-
-Our robot's mechanical documentation belongs in [Mech/](Mech/). We'll use this section to record:
-
-- Overall dimensions: length, width, and height.
-- Chassis material and how the structure is assembled.
-- Wheel type, diameter, spacing, and ground clearance.
-- Where the motors, battery, controller, and sensors are mounted.
-- How the design keeps the robot stable and protects its electronics.
-- Which parts can be removed or adjusted for maintenance.
-
-We still need to add the measured dimensions, material details, and CAD views here. We don't want to guess numbers that should come from the actual build.
-
-### Drive system
-
-Our current firmware has a separate motor module:
-
-- [motor.cpp](Code/motor.cpp)
-- [motor.h](Code/motor.h)
-
-The module sets a speed target, reads encoder pulses, estimates RPM, and adjusts a PWM output. The code uses an encoder input on pin D3 and motor-driver signals on D5, D7, and D4.
-
-The exact motor model, gearbox, wheel radius, and drivetrain arrangement should be documented alongside the mechanical files. Those details matter when calculating the torque and speed the robot can really deliver.
-
-## Drive motor selection & torque analysis
-
-Choosing the drive motor was not just a matter of picking a motor that fits the chassis. We looked at the motor's technical data and checked whether the available torque, together with the gearbox, could overcome the rolling resistance of our robot.
-
-### 1. The motor we selected
-
-Our selected motor is the **RE-260RA-2670**, with the reference data shown at **DC 3.0 V**. The image below is the motor data used during selection. It gives the operating range, speed, current, torque and stall characteristics that we need to consider when matching the motor to the drivetrain and motor driver.
+(2) We calculated the minimum required torque based on the car's mass (650 g), wheel diameter (44 mm), and an estimated rolling resistance coefficient of 0.02 for rubber wheels on a hard surface. The rolling resistance force was approximately 127.5 mN, resulting in a minimum total wheel torque of 2.81 mN·m. This value represents the theoretical minimum torque required to keep the car moving on a flat surface at constant speed.
 
 <p align="center">
-  <img src="docs/Motor%20selection.png" alt="RE-260RA-2670 motor technical data used for motor selection" width="900">
+  <img src="docs/motor_selection.jpeg" alt="Motor selection" width="850">
 </p>
 
-### 2. How we checked the required torque
-
-We then estimated the torque needed to move the robot against rolling resistance. Our handwritten calculation records the robot mass, wheel radius, rolling-resistance coefficient, gearbox ratio and assumed gearbox efficiency, followed by the calculation steps and comparison.
+We chose the RE-260RA-2670 DC motor, equipped with a 17:1 reduction gearbox, based on its technical specifications, which are presented in the table below. At the maximum efficiency operating point (10,200 rpm and 1.5 mN·m), and assuming a gearbox efficiency of 80%, the gearbox reduces the output speed to 600 rpm and provides an output torque of 20.4 mN·m. With 44 mm diameter wheels, this corresponds to a theoretical linear speed of 1.38 m/s. Since our target speed is 1.2 m/s, the selected motor provides sufficient speed, with approximately 15.2% additional speed capacity. Furthermore, the available output torque is approximately 7.27 times greater than the previously calculated minimum required torque of 2.81 mN·m, making this motor suitable for our vehicle.
 
 <p align="center">
-  <img src="docs/tork.jpeg" alt="InnoBots handwritten torque analysis and gearbox torque calculation" width="780">
+  <img src="docs/Motor%20selection.png" alt="RE-260RA-2670 motor technical specifications" width="850">
 </p>
-
-The calculation uses a robot mass of **0.630 kg**, a wheel radius of **0.022 m**, a rolling-resistance coefficient of **0.01**, a **17:1** gearbox ratio and an assumed gearbox efficiency of **0.80**. It estimates the rolling-resistance force first, converts that force into the minimum wheel torque, then estimates gearbox output torque and compares the two.
-
-**Engineering check still open:** the motor data image lists **1.5 mN·m** at maximum efficiency, while the handwritten calculation uses **1.70 mN·m** as its motor torque input. We have kept our original calculation visible, but we need to confirm the source and operating point for 1.70 mN·m before treating the resulting ratio as final. The torque check also covers rolling resistance on level ground only; it does not establish performance during acceleration, turning, slopes or uneven-surface driving.
-
-The motor data lists a **4.73 A stall current**. Before full-load testing, we must verify the current and thermal limits of the exact DRV8833 driver board and ensure that the supply and wiring are suitable.
-
----
-
-### Steering system
-
-Steering has its own source and header files:
-
-- [sterring.cpp](Code/sterring.cpp)
-- [sterring.h](Code/sterring.h)
-
-The current implementation uses the Arduino Servo library and provides a `setAngle(int angle)` function. The PID-related functions are declared, but the steering PID routine is not yet implemented.
-
-We'll add photos or CAD drawings of the steering linkage, its range of motion, and the reason for the geometry we choose. A good steering system isn't just one that turns; it should turn predictably and repeatably.
-
-### The numbers behind the design
-
-We still need to publish verified calculations for:
-
-1. Required wheel speed based on our target robot speed.
-2. Required wheel torque based on robot mass, wheel radius, and expected resistance.
-3. Gear ratio and drivetrain efficiency, if a gearbox is used.
-4. The safety margin between calculated needs and the motor's specifications.
-
-We'll include the component datasheets and our assumptions with the calculations. If a value is estimated, we'll label it as an estimate; if we measure it, we'll show the test.
 
 ---
 
