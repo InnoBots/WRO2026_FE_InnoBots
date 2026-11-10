@@ -69,10 +69,25 @@ After high school, each member continued their studies at a different school. We
 Some milestones we are proud of:
 
 - **WRO 2026 — Future Engineers: 1st Place.** We earned first place together, representing the result of our shared work and preparation.
+
+  <p align="center">
+    <img src="t-photos/Team-WRO2026.jpeg" alt="InnoBots team at WRO Future Engineers 2026" width="620">
+  </p>
+
 - **WRO 2025 — Future Innovators: 3rd Place.** An earlier milestone in our competition journey.
 - **WRO Open Championship — Slovenia: Qualified.** We earned qualification for the Open Championship, although we were ultimately unable to attend.
-- **MRNC and ENSET competitions — Winner.** We also report winning at these competitions during 2026.
+- **MRNC 2026 — Winner.** We are proud to have won the MRNC competition in 2026.
+
+  <p align="center">
+    <img src="t-photos/Team-MRNC.jpeg" alt="InnoBots team at MRNC 2026" width="620">
+  </p>
+
+- **ENSET 2026 — Winner.** Another achievement from our 2026 competition journey.
 - **STMicroelectronics competition in Morocco — Winner.** Another achievement that reflects our interest in applying engineering beyond a single competition.
+
+  <p align="center">
+    <img src="t-photos/Team-Nawabigh-ST.jpg" alt="InnoBots team at the Nawabigh ST competition" width="620">
+  </p>
 
 For us, these results are not just titles. Each competition has been an opportunity to learn, work under pressure, improve our ideas, and grow as a team. We will continue adding verified event names, dates, certificates, and photos as we organize that evidence.
 
