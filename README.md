@@ -44,7 +44,7 @@ These pictures are our starting point for explaining the design. As the build ch
 A competition robot may run on motors, batteries, and code, but a team runs on people. InnoBots is the group of students bringing this project to life: sharing ideas, building, programming, checking each other's work, and figuring things out when the first attempt doesn't go as planned.
 
 <p align="center">
-  <img src="t-photos/Team_photo.jpg" alt="InnoBots team photo" width="620">
+  <img src="t-photos/Team1.webp" alt="InnoBots team at a different team moment" width="620">
 </p>
 
 ### The people behind the robot
