@@ -45,3 +45,4 @@ The table groups the peripherals with the controller they connect to. The power-
 | Arduino Pro Mini and MG90S servo | 200 mA  |
 | RE-260RA-2670 DC motor |1 A |
 
+Total current consumption and estimated autonomy: The estimated maximum current consumption of the complete system is approximately 5.2 A. This represents a peak-load estimate; actual current consumption during normal operation is expected to be lower. With the reported 3000 mAh battery capacity, the theoretical autonomy at a constant 5.2 A would be approximately 35 minutes. In practice, autonomy will depend on the robot's workload, battery condition and voltage-conversion efficiency. These values are estimates and should be verified through real measurements.
