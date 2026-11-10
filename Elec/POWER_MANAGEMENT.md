@@ -1,86 +1,91 @@
 # Power Management
 
-This document describes the power system for the robot: the battery, the load budget, power distribution, expected runtime, and protection. All figures are design estimates based on the peak current values listed below. Verify them with measurements before relying on them.
+This document describes the current power-system concept for the InnoBots robot. It is a **design draft**, not a verified wiring or safety document. Values that have not yet been confirmed from the actual components or measurements are labelled accordingly.
 
-## Battery
+## 1. Battery and protection
 
-| Parameter | Value |
-|---|---|
-| Chemistry | 2S Li-Po (assumed from the 7.4 V nominal voltage) |
-| Nominal voltage | 7.4 V |
-| Full charge voltage | 8.4 V (4.2 V per cell) |
-| Low-voltage cutoff | 6.4 V (3.2 V per cell), recommended |
-| Capacity | 3000 mAh (22.2 Wh) |
-| Max continuous discharge | 20 A (about 6.7C) |
+| Parameter | Current project information | Status |
+|---|---|---|
+| Battery chemistry | 2S Li-ion (as reported by the team) | Confirm exact pack label |
+| Nominal voltage | 7.4 V (2 cells in series) | Typical for 2S Li-ion |
+| Fully charged voltage | 8.4 V (4.2 V per cell) | Confirm cell datasheet |
+| Capacity | TBC | Read from actual pack |
+| Maximum continuous discharge | TBC | Read from pack label/datasheet |
+| Battery management system | 2S BMS | Confirm current rating and protection functions |
+| Low-voltage cutoff | TBC | Must follow the actual cell and BMS specifications |
 
-Confirm the chemistry and cell count against the pack label.
+The previous draft contained a 3000 mAh capacity and 20 A discharge rating. These values are **not confirmed by the information currently supplied by the team**, so they must not be used for a final runtime or safety claim until checked against the battery.
 
-## System Loads
+## 2. Power architecture
 
-| Load | Supply rail | Peak current | Peak power | Battery-side current |
-|---|---|---|---|---|
-| Raspberry Pi 5, LiDAR, and camera | 5 V | 4.0 A | 20.0 W | 3.0 A |
-| Steering servo and other electronics | 5 V | 0.5 A | 2.5 W | 0.38 A |
-| DC drive motor | 7.4 V (battery) | 1.0 A | 7.4 W | 1.0 A |
-| **Total** | | | **29.9 W** | **4.4 A** |
-
-Assumptions used in these numbers:
-
-- The 5 V buck converter is 90% efficient. At 85% efficiency, the battery-side peak rises to about 4.6 A.
-- All peaks occur at the same time. This is a worst-case budget.
-- The steering servo and other electronics draw from the 5 V rail. If the servo requires 6 V, power it from a separate regulator and recalculate.
-- The motor draws its current directly from the 7.4 V battery. Motor driver losses are not included.
-
-## Power Architecture
+The intended system-level arrangement is:
 
 ```mermaid
 flowchart LR
-    BAT["7.4 V 2S Li-Po<br/>3000 mAh, 20 A max"] --> FUSE["Main switch<br/>and 10 A fuse"]
-    FUSE --> BUCK["5 V buck converter<br/>rated 6 A or more"]
-    FUSE --> MOT["Motor driver"]
-    BUCK --> PI["Raspberry Pi 5<br/>with LiDAR and camera<br/>4 A peak"]
-    BUCK --> SRV["Steering servo<br/>and other electronics<br/>0.5 A"]
-    MOT --> DC["DC drive motor<br/>1 A peak"]
+    BAT["2S Li-ion battery<br/>7.4 V nominal / 8.4 V full"] --> BMS["2S BMS"]
+    BMS --> PROT["Main switch and fuse<br/>ratings TBC"]
+    PROT --> REG["XL4015 DC-DC converter<br/>output setting and current rating TBC"]
+    PROT --> MOTOR_DRIVER["DRV8833 motor driver<br/>motor supply to verify"]
+    REG --> PI["Raspberry Pi 5"]
+    REG --> SENSORS["Camera / LiDAR<br/>rails to verify"]
+    REG --> SERVO["MG90S servo<br/>separate rail may be required"]
+    MOTOR_DRIVER --> MOTOR["RE-260RA-2670 DC motor"]
+    MCU["Arduino Pro Mini"] --- PI
+    MCU --- MOTOR_DRIVER
 ```
 
-## Power Budget and Runtime
+This block diagram shows the intended functional groups only. It is **not a pin-to-pin wiring schematic**. The actual regulator outputs, grounds, fuses, connectors, and signal-level interfaces still need to be documented.
 
-At the worst-case battery-side peak of 4.4 A, the pack delivers about 32.4 W.
+## 3. Loads and power budget
 
-- **Discharge margin:** 4.4 A is 22% of the 20 A rating, a margin of about 4.5x.
-- **C-rate at peak:** about 1.5C, which is within the pack’s capability.
+A reliable power budget needs the actual supply voltage and current for every device. The table below separates known component names from values that still need confirmation.
 
-Runtime is calculated as capacity divided by average battery current:
+| Load | Intended supply | Current / power information | Status |
+|---|---|---|---|
+| Raspberry Pi 5 | Regulated 5 V rail | Measure under the robot's real workload; verify regulator capacity | TBC |
+| Camera Module 3 | Pi camera interface | Confirm Pi/camera connection and total system load | TBC |
+| D500 LiDAR | Per exact sensor datasheet | Exact model, voltage and current not yet confirmed | TBC |
+| MG90S servo | Regulated servo rail | Confirm supply voltage and peak/stall current | TBC |
+| Arduino Pro Mini | Regulated logic rail | Confirm 3.3 V or 5 V board variant | TBC |
+| RE-260RA-2670 motor | Motor rail to verify | Motor reference is selected at 3.0 V; data lists 0.97 A at maximum efficiency and 4.73 A stall current | Voltage/current integration unresolved |
 
-| Average battery current | Estimated runtime |
-|---|---|
-| 4.4 A (sustained worst-case peak) | about 41 min |
-| 2.2 A (50% average duty) | about 82 min |
-| 1.1 A (25% average duty) | about 164 min |
+### Critical motor-supply mismatch
 
-The duty-cycle rows are illustrative. Replace them with measured averages. Actual runtime will be shorter because of the low-voltage cutoff and internal resistance under peak load.
+The motor-selection reference supplied by the team identifies the **RE-260RA-2670 at DC 3.0 V**. The battery is a 2S Li-ion pack with a nominal voltage of 7.4 V and a fully charged voltage of 8.4 V. The motor must **not** be connected directly to the 2S battery unless the exact motor datasheet and final design explicitly permit that voltage. The motor-side voltage regulation or other approved supply arrangement must be confirmed and shown in the wiring diagram.
 
-## Hardware Requirements
+The motor reference lists a 4.73 A stall current at 3.0 V. This is not the normal running current, but it is important when checking the DRV8833 board, wiring, supply and protection. Confirm the exact driver module's current and thermal limits before operation.
 
-- **5 V buck converter:** rated at least 6 A continuous. The Raspberry Pi 5 official supply is 5 V and 5 A, and the peak budget here is 4.5 A on the 5 V rail.
-- **Main fuse:** 10 A on the battery positive line, mounted close to the pack. This is above the 4.4 A peak and below the pack’s 20 A rating.
-- **Wiring:** at least 18 AWG for the main battery path.
-- **Charger:** a balance charger rated for 2S Li-Po.
-- **Optional monitoring:** a current and voltage sensor such as the INA219 on the battery line, for logging real draw.
+### Why a final total and runtime are not shown yet
 
-## Protection
+The earlier draft estimated a 29.9 W peak load and calculated runtime from an assumed 3000 mAh battery. Those figures depend on unverified battery and load assumptions, and the earlier motor supply entry did not match the selected 3.0 V motor reference. We are therefore withholding a final total current, power margin and runtime until the component ratings and measurements are confirmed.
 
-- Set the low-voltage cutoff at 6.4 V (3.2 V per cell). Do not discharge below 6.0 V (3.0 V per cell).
-- Never exceed the 20 A continuous discharge rating. Stall current from the motor must stay within the driver limit.
-- Charge at 1C (3 A) or lower unless the pack datasheet allows more.
-- Charge only with a balance charger, supervised, on a fire-resistant surface.
-- If the pack will be stored for a long time, bring it to about 3.8 V per cell (7.6 V pack).
+## 4. Verification checklist
 
-## Verification Checklist
+- [ ] Photograph/read the battery label: chemistry, capacity, voltage and discharge rating.
+- [ ] Record the 2S BMS model and continuous/peak current ratings.
+- [ ] Record the XL4015 module's actual configured output voltage and verify its continuous-current and thermal capability.
+- [ ] Confirm the motor supply arrangement for the 3.0 V RE-260RA-2670.
+- [ ] Confirm the exact DRV8833 module and compare its limits with the motor's current requirements.
+- [ ] Confirm the MG90S servo's required voltage and peak current; do not power it from a microcontroller GPIO pin.
+- [ ] Confirm the exact D500 LiDAR model and its voltage/current/interface requirements.
+- [ ] Confirm the Arduino Pro Mini variant (3.3 V or 5 V).
+- [ ] Draw the final wiring schematic, including grounds, connectors, fuse, switch and regulator outputs.
+- [ ] Measure the 5 V rail under Pi and sensor load.
+- [ ] Measure motor current during startup, normal driving and controlled load tests.
+- [ ] Verify regulator temperature and voltage stability during a full test run.
+- [ ] Determine low-voltage cutoff from the actual battery and BMS specifications.
+- [ ] Calculate runtime only after recording measured average battery current.
 
-- [ ] Measure real current draw on the 5 V rail under full load
-- [ ] Measure real current draw on the motor circuit under full load
-- [ ] Confirm the steering servo’s operating voltage
-- [ ] Confirm the buck converter holds 5 V at 4.5 A
-- [ ] Confirm the low-voltage cutoff triggers at 6.4 V
-- [ ] Confirm the main fuse does not open during motor startup
+## 5. Evidence to add
+
+To make this section reproducible and suitable for judging, add:
+
+1. A clear photo of the battery label and BMS board.
+2. A photo of the XL4015 module showing its markings and adjustment setting.
+3. A wiring diagram showing the actual connection from battery to BMS, switch/fuse, regulators, motor driver and loads.
+4. A measured current table for idle, computing/sensor load, motor running and steering movement.
+5. A short test record showing voltage before and after a representative run.
+
+---
+
+*InnoBots · WRO Future Engineers 2026 · Power architecture status: design draft awaiting hardware verification.*
