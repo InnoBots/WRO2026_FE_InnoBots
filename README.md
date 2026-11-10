@@ -81,8 +81,7 @@ Some milestones we are proud of:
   <p align="center">
     <img src="t-photos/Team-MRNC.jpeg" alt="InnoBots team at MRNC 2026" width="620">
   </p>
-
-- **ENSET 2026 — Winner.** Another achievement from our 2026 competition journey.
+  
 - **Nawabigh ST (STMicroelectronics competition in Morocco) — Winner.** Another achievement that reflects our interest in applying engineering beyond a single competition.
 
   <p align="center">
