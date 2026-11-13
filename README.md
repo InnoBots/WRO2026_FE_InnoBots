@@ -89,27 +89,27 @@ The robot's mechanical structure is designed around a compact chassis, mounted c
 The following renders show the geometry of the individual parts. They are visual CAD views rather than dimensioned manufacturing drawings.
 
 <p align="center">
-  <img src="Mech/WhatsApp%20Image%202026-11-10%20at%2013.48.44.jpeg" alt="Main chassis CAD view" width="700">
+  <img src="Mech/CAD_Chassis_Main.jpeg" alt="Main chassis CAD view" width="700">
   <br><em>Main chassis plate with perimeter mounting holes and rear mounting features.</em>
 </p>
 
 <p align="center">
-  <img src="Mech/WhatsApp%20Image%202026-11-10%20at%2013.48.44%20(1).jpeg" alt="Upper chassis CAD view" width="700">
+  <img src="Mech/CAD_Chassis_Upper.jpeg" alt="Upper chassis CAD view" width="700">
   <br><em>Upper chassis plate showing raised mounting bosses and elongated slots.</em>
 </p>
 
 <p align="center">
-  <img src="Mech/WhatsApp%20Image%202026-11-10%20at%2013.48.45.jpeg" alt="Mechanical side component CAD view" width="600">
+  <img src="Mech/CAD_Side_Mount.jpeg" alt="Mechanical side component CAD view" width="600">
   <br><em>Side structural component with mounting openings.</em>
 </p>
 
 <p align="center">
-  <img src="Mech/WhatsApp%20Image%202026-11-10%20at%2013.48.46.jpeg" alt="Wheel rim CAD view" width="600">
+  <img src="Mech/CAD_Wheel_Rim.jpeg" alt="Wheel rim CAD view" width="600">
   <br><em>Wheel rim with central hub and circumferential openings.</em>
 </p>
 
 <p align="center">
-  <img src="Mech/WhatsApp%20Image%202026-11-10%20at%2013.48.47.jpeg" alt="Mechanical cover CAD view" width="700">
+  <img src="Mech/CAD_Side_Cover.jpeg" alt="Mechanical cover CAD view" width="700">
   <br><em>Curved cover / structural panel with rectangular openings.</em>
 </p>
 
