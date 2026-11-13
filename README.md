@@ -183,18 +183,37 @@ The steering module attaches the servo and provides an interface for requesting 
 
 The UART module initializes serial communication at **115200 baud**. It supports sending text lines and reading incoming text until a newline character.
 
-## 4. Design concept
+## 4. Engineering references
 
-Our project is based on the idea of a small autonomous car that can drive around a closed course. Instead of being remotely controlled, the vehicle uses its onboard electronics and sensors to observe the track, determine how it should move, and control its motor and steering.
+This section brings together the official description of the WRO Future Engineers 2026 challenges and documentation for programming concepts that appear in the robot's Arduino code. These links are provided to help readers understand the challenge and the technologies used in the project.
 
-The 2026 WRO Future Engineers challenge is built around autonomous driving. In the Open Challenge, the car completes laps on a track whose wall layout can change. In the Obstacle Challenge, it must also respond to traffic signs and finish with a parking manoeuvre. These competition tasks provided the context for our vehicle concept and the systems we chose to build.
+### WRO Future Engineers 2026 challenge
 
-Our design brings together a compact chassis, a driven wheel system, servo steering, a Raspberry Pi, a camera, LiDAR, and a microcontroller. The mechanical parts provide the vehicle structure; the electronics support sensing and control; and the firmware provides the interface to the motor, steering, and communication modules.
+The 2026 category has two autonomous-driving challenges. Each attempt is a time-attack run: one vehicle drives on the field at a time, and the objective is to complete the required course autonomously within the round time.
 
-**Competition concept and rules:** [WRO Future Engineers 2026 — Official Game Rules](https://wro-association.org/wp-content/uploads/2026/01/WRO-2026-Future-Engineers-Self-Driving-Cars-General-Rules-FINAL.pdf) · [WRO 2026 season information](https://wro-association.org/competition/2026-season/)
+- **Open Challenge:** The vehicle must complete three laps. The positions of the inner track walls are randomized, changing the track layout between rounds. The starting position and driving direction can also change. There are no traffic-sign pillars in this challenge, and the vehicle must finish by stopping autonomously in the designated finish section.
+- **Obstacle Challenge:** The vehicle must complete three laps while responding to randomly positioned traffic-sign pillars. A red pillar indicates that the vehicle must follow the right side of the lane; a green pillar indicates that it must follow the left side. The vehicle must avoid moving the pillars. After completing the laps, it must locate the parking area and perform a parallel-parking manoeuvre.
 
-The links above describe the competition challenge. They are included as context for the project, not as a claim that the team used external technical references to develop its design.
+Official documents:
+- [WRO Future Engineers 2026 — Official Game Rules (PDF)](https://wro-association.org/wp-content/uploads/2026/01/WRO-2026-Future-Engineers-Self-Driving-Cars-General-Rules-FINAL.pdf)
+- [WRO 2026 Season](https://wro-association.org/competition/2026-season/)
 
+### Programming concepts visible in our code
+
+The current Arduino source files contain examples of the following control and communication concepts:
+
+| Project code | Concept | Reference |
+|---|---|---|
+| `Code/motor.cpp` | Encoder pulse measurement using an external interrupt | [Arduino `attachInterrupt()`](https://docs.arduino.cc/language-reference/en/functions/external-interrupts/attachInterrupt) |
+| `Code/motor.cpp` | PWM output to control the motor-driver speed command | [Arduino `analogWrite()`](https://docs.arduino.cc/language-reference/en/functions/analog-io/analogWrite) |
+| `Code/sterring.cpp` | Servo attachment and angle commands | [Arduino Servo library](https://github.com/arduino-libraries/Servo) |
+| `Code/uart.cpp` | Serial communication and newline-terminated messages | [Arduino Serial / Stream reference](https://docs.arduino.cc/language-reference/en/functions/communication/serial/) |
+
+In the current repository, these files show the low-level building blocks for motor feedback and control, steering commands, and serial communication. The main Arduino sketch is a motor test program. The repository does not currently show a complete camera/LiDAR perception pipeline or a complete autonomous navigation program for the two challenge rounds, so this section does not claim that those functions are implemented.
+
+### Hardware documentation
+
+The component list and the team's motor-selection and torque calculations are included in [docs/parts-list.md](docs/parts-list.md). The power distribution concept is described in [Elec/POWER_MANAGEMENT.md](Elec/POWER_MANAGEMENT.md). These are project design notes and calculations; the competition rules and Arduino links above are external references for the challenge requirements and programming concepts.
 ## 5. Building and project files
 
 - Mechanical part models are stored in [Mech/](Mech/).
