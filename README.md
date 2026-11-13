@@ -183,9 +183,17 @@ The steering module attaches the servo and provides an interface for requesting 
 
 The UART module initializes serial communication at **115200 baud**. It supports sending text lines and reading incoming text until a newline character.
 
-## 4. Engineering references
+## 4. Design concept
 
-The repository includes the motor-selection image, motor specifications, a parts inventory, and a preliminary torque calculation. These references describe the assumptions used in the team's design work. The torque calculation considers rolling resistance on a level surface; it does not represent a full-course performance test.
+Our project is based on the idea of a small autonomous car that can drive around a closed course. Instead of being remotely controlled, the vehicle uses its onboard electronics and sensors to observe the track, determine how it should move, and control its motor and steering.
+
+The 2026 WRO Future Engineers challenge is built around autonomous driving. In the Open Challenge, the car completes laps on a track whose wall layout can change. In the Obstacle Challenge, it must also respond to traffic signs and finish with a parking manoeuvre. These competition tasks provided the context for our vehicle concept and the systems we chose to build.
+
+Our design brings together a compact chassis, a driven wheel system, servo steering, a Raspberry Pi, a camera, LiDAR, and a microcontroller. The mechanical parts provide the vehicle structure; the electronics support sensing and control; and the firmware provides the interface to the motor, steering, and communication modules.
+
+**Competition concept and rules:** [WRO Future Engineers 2026 — Official Game Rules](https://wro-association.org/wp-content/uploads/2026/01/WRO-2026-Future-Engineers-Self-Driving-Cars-General-Rules-FINAL.pdf) · [WRO 2026 season information](https://wro-association.org/competition/2026-season/)
+
+The links above describe the competition challenge. They are included as context for the project, not as a claim that the team used external technical references to develop its design.
 
 ## 5. Building and project files
 
