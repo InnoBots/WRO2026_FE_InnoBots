@@ -163,25 +163,111 @@ See [Elec/POWER_MANAGEMENT.md](Elec/POWER_MANAGEMENT.md) for the block diagram a
 
 ## 3. Software architecture
 
-The firmware is written in Arduino C++ and divided into modules.
+- **Raspberry Pi (Python):** reads the camera and LiDAR, decides the speed and steering error, then sends commands over serial.
+- **Arduino (C++):** receives those commands and controls the motor and steering servo.
 
-### Main program — `main.ino`
+## Project structure
 
-The current main program initializes the motor and serial modules, sets the motor direction, reports measured motor speed over serial, sets a speed target, and repeatedly calls the motor update function. It serves as a motor-control test program.
+```text
+Code/
+├── py_code/
+│   ├── main.py                  # Main autonomous driving loop
+│   ├── camera.py                # Camera capture and color/object detection
+│   ├── lidar.py                 # LiDAR scans, obstacle detection, steering estimate
+│   ├── myserial.py              # Serial connection and command transmission
+│   └── colors_hsv_config.json   # HSV color thresholds used by camera.py
+└── cpp_code/
+    ├── main/                    # Arduino sketch and hardware modules
+    │   ├── main.ino             # Arduino startup and loop
+    │   ├── uart.cpp / uart.h    # Receives and parses Pi commands
+    │   ├── motor.cpp / motor.h  # Motor output and encoder RPM measurement
+    │   ├── steering.cpp / steering.h # PID steering and servo output
+    │   ├── back_sensor.cpp / back_sensor.h # Rear analog sensors
+    │   └── power.cpp / power.h  # Battery voltage and current-sensor helpers
+    └── flash.sh                 # Compile and flash helper for Raspberry Pi
+```
 
-### Motor control — `motor.cpp`
+## Python code: Raspberry Pi
 
-The motor module uses an encoder interrupt to record pulse timing. The `currentRpm()` function estimates rotational speed from the pulse period. The `motorRun()` function updates the PWM command at approximately 50 ms intervals using a proportional / derivative control structure, limits the command to the 0–255 range, and sends it to the motor driver. The control gains are configurable through `setKp()` and `setKd()`.
+### `main.py` — system coordinator
 
-The RPM calculation depends on the encoder pulse count and drivetrain configuration. The code's scaling factor should be interpreted together with the encoder specification.
+This is the program entry point and the high-level driving logic. It starts the LiDAR and camera workers, then repeatedly:
 
-### Steering — `sterring.cpp`
+1. Sets the requested motor speed and PID gains.
+2. Checks `camera.camera_obstacle()` for a red or green object and its horizontal image error.
+3. If a camera object is detected while LiDAR reports an obstacle, chooses a strong steering direction based on its color (red steers one way, green the other).
+4. Otherwise, uses the camera error, or the LiDAR left/right distance error, as the steering request.
+5. Sends `motorSpeed,steerError,Kp,Ki,Kd` to the Arduino.
 
-The steering module attaches the servo and provides an interface for requesting a steering angle.
 
-### UART communication — `uart.cpp`
 
-The UART module initializes serial communication at **115200 baud**. It supports sending text lines and reading incoming text until a newline character.
+### `camera.py` — vision and color detection
+
+Uses Picamera2 to capture 1280×720 frames on a background thread. Each frame is rotated 180 degrees, converted from RGB to HSV, and thresholded using `colors_hsv_config.json`. It applies a morphological opening to reduce small noise and displays the camera image and color masks in OpenCV windows.
+
+`camera_obstacle()` examines red and green masks, finds contours at least `min_area` pixels large, selects the largest, and returns `(horizontal_error, color)`. The error is the contour center relative to the image center. `start_camera()` initializes capture and the worker; `stop_camera()` stops the worker and releases the camera.
+
+### `lidar.py` — range sensing
+
+Reads LDROBOT STL-19P scans from `/dev/ttyAMA2` on a background thread. Valid polar scan points are converted into Cartesian `(x, y)` coordinates and shared with the rest of the program under a lock.
+
+- `lidar_obstacle()` checks for points in the forward region `-55 < x < 55` mm and `40 < y < 250` mm.
+- `left_obstacle()` and `right_obstacle()` check the corresponding sides of that region.
+- `lidar_error()` computes the difference between average left and right point distances; positive/negative values provide a steering cue.
+- `get_cordonates()` returns a copy of the latest point list (function spelling retained from source).
+
+### `myserial.py` — Pi-to-Arduino link
+
+Opens a pySerial connection on `/dev/ttyAMA0` at 115200 baud. `write_to_serial(data)` appends a newline and writes the command as UTF-8, matching the Arduino line-based parser.
+
+### `colors_hsv_config.json` — vision thresholds
+
+Stores lower and upper HSV bounds (six values per color) for Red, Green, Blue, Orange, and Magenta. These values are loaded by `camera.py`; red and green are the colors currently used by `camera_obstacle()`.
+
+## Arduino code: motor and steering controller
+
+### `main.ino` — Arduino lifecycle
+
+`setup()` initializes UART, motor outputs/encoder, and steering servo, then commands zero speed. Each `loop()` reads any available serial command, updates steering, and applies the current motor speed.
+
+### `uart.cpp` / `uart.h` — command parser
+
+Defines the shared command values (`motorSpeed`, `steerError`, and PID gains), starts hardware serial, and parses incoming newline-terminated CSV commands. `update_serial()` expects exactly five comma-separated fields in this order:
+
+```text
+motorSpeed,steerError,Kp,Ki,Kd
+```
+
+The header declares these globals so the steering and main modules can use them.
+
+### `motor.cpp` / `motor.h` — drive motor
+
+Configures PWM outputs on pins 5 and 6 and an encoder input on pin 3. `runSpeed(speed)` selects direction and PWM duty cycle from the sign and magnitude of the requested speed. The encoder interrupt records pulse timing; `currentRpm()` estimates RPM from the pulse period.
+
+### `steering.cpp` / `steering.h` — PID steering
+
+Uses the `PID_v1` library to turn `steerError` into a servo correction. It updates PID tunings when the received `Kp`, `Ki`, or `Kd` changes, limits the correction to the configured servo range, and writes the result to a servo on pin 9. The center angle is 90 degrees; limits are 45 to 150 degrees.
+
+### `back_sensor.cpp` / `back_sensor.h` — rear sensors
+
+Reads two analog sensors on A2 and A3. `backError()` returns right sensor reading minus left sensor reading. These functions are available to other code, but are not called from the current `main.ino` loop.
+
+### `power.cpp` / `power.h` — power sensing helpers
+
+Initializes analog inputs A0 (battery) and A1 (current sensor). `battery_voltage()` estimates battery voltage from A0 with a fixed offset. `pi_current()` contains current-sensor conversion constants, but currently returns the raw ADC reading rather than the calculated current. Neither helper is used by the current main loop.
+
+### `flash.sh` — Arduino build/upload helper
+
+For Raspberry Pi/Linux: compiles the sketch with `arduino-cli`, toggles GPIO 18 for reset, then uploads the HEX using `avrdude` through `/dev/ttyAMA0`. It expects the sketch directory as its argument, for example `./flash.sh main` from `cpp_code`.
+
+## Command flow
+
+```text
+Camera + LiDAR → main.py decision loop → CSV over UART → uart.cpp parser
+                                                       ├── motor.cpp → drive motor
+                                                       └── steering.cpp → steering servo
+```
+
 
 ## Competition videos
 
