@@ -313,8 +313,6 @@ The angle is converted from degrees to radians before calling Python's `sin` and
 
 > **Figure placeholder — LiDAR coordinate frame**  
 > Add a top-down picture of the car showing the LiDAR origin, positive `x` to the right, positive `y` forward, a measured point at distance `r`, angle `θ`, and the projections `x = r cos(θ)` and `y = -r sin(θ)`. Label the vehicle's left and right sides to match the signs used in `lidar.py`.
->
-> `![Top view of car and LiDAR coordinate axes](docs/lidar-coordinate-frame.png)`
 
 ### Obstacle detection
 
