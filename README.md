@@ -145,15 +145,21 @@ The electronics connect the controller, motor driver, sensors, and battery. The 
 
 The following assignments are defined in the current source files:
 
-| Function | Pin | Source |
-|---|---:|---|
-| Motor encoder | D3 | `motor.cpp` |
-| Motor driver enable / PWM | D5 | `motor.cpp` |
-| Motor direction input 1 | D7 | `motor.cpp` |
-| Motor direction input 2 | D4 | `motor.cpp` |
-| Steering servo signal | D5 | `sterring.cpp` |
+### Firmware pin assignments
 
-The source currently assigns D5 to both motor PWM/enable and the steering servo signal. This is a pin assignment conflict in the present code and is important context when interpreting the firmware configuration.
+| Arduino pin | Function | Source |
+|---|---|---|
+| D3 | Motor encoder input; rising-edge interrupt | `motor.cpp` |
+| D5 | Motor driver output 1 (PWM) | `motor.cpp` |
+| D6 | Motor driver output 2 (PWM) | `motor.cpp` |
+| D9 | Steering servo signal | `steering.cpp` |
+| A0 | Battery voltage sensor input | `power.cpp` |
+| A1 | Current sensor input | `power.cpp` |
+| A2 | Left rear sensor input | `back_sensor.cpp` |
+| A3 | Right rear sensor input | `back_sensor.cpp` |
+| GPIO 18 | Arduino reset control during upload | `flash.sh` |
+| `/dev/ttyAMA0` | Serial connection to Raspberry Pi; runtime set to 115200 baud | `myserial.py`, `uart.cpp` |
+
 
 ### Power architecture
 
