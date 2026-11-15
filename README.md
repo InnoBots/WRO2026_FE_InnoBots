@@ -127,6 +127,11 @@ The selected drive motor is the **RE-260RA-2670 DC motor** with a stated **17:1 
 <p align="center"><img src="docs/Motor%20selection.png" alt="RE-260RA-2670 motor specifications" width="850"></p>
 
 The component inventory and the team's torque calculation are documented in [docs/parts-list.md](docs/parts-list.md).
+## Steering method: Ackermann
+
+We chose **Ackermann steering** because the inside front wheel must turn more sharply than the outside wheel during a turn. This helps both front wheels follow their own path with less tire slipping, making turns smoother and more controlled.
+
+Our Arduino sends one steering command to a servo. The mechanical linkage determines how that command moves the front wheels. The steering angle is controlled by a PID loop, with the servo centered at 90° and limited to 45°–150°.
 
 ## 2. Electronics, power & sensors
 
