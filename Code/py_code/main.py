@@ -28,9 +28,9 @@ def main():
         
         while True:
             # =================== main code =======================
-            motorSpeed = 70
-            Kp = 0.8  #0.1
-            Ki = 0.0 #0.05
+            motorSpeed = 60
+            Kp = 0.115  #0.1
+            Ki = 0.02 #0.05
             Kd = 0.1 #0.05
             
             cam_ob = camera.camera_obstacle()
