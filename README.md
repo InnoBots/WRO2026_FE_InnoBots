@@ -282,22 +282,139 @@ Here are two videos showing our robot on the course during the WRO Future Engine
 - **Open Challenge:** [Watch our run on YouTube](https://youtu.be/mYlt0tB4ghc)
 - **Obstacle Challenge:** [Watch our run on YouTube](https://youtu.be/6qGnksUF9Dk)
 
-## 4. Engineering references
+## 4. Obstacle Management and Navigation
 
-The links below document programming concepts used in the robot's Arduino code and provide references for the hardware and electrical design.
+This document explains how the vehicle uses LiDAR, camera color detection, and track-line counting to navigate the WRO Future Engineers course.
 
-### Programming concepts visible in our code
+## Navigation overview
 
-The current Arduino source files contain examples of the following control and communication concepts:
+The navigation system combines three kinds of information:
 
-| Project code | Concept | Reference |
-|---|---|---|
-| `Code/motor.cpp` | Encoder pulse measurement using an external interrupt | [Arduino `attachInterrupt()`](https://docs.arduino.cc/language-reference/en/functions/external-interrupts/attachInterrupt) |
-| `Code/motor.cpp` | PWM output to control the motor-driver speed command | [Arduino `analogWrite()`](https://docs.arduino.cc/language-reference/en/functions/analog-io/analogWrite) |
-| `Code/sterring.cpp` | Servo attachment and angle commands | [Arduino Servo library](https://github.com/arduino-libraries/Servo) |
-| `Code/uart.cpp` | Serial communication and newline-terminated messages | [Arduino Serial / Stream reference](https://docs.arduino.cc/language-reference/en/functions/communication/serial/) |
+1. **LiDAR distance points** estimate the free space around the front of the car and provide a steering correction.
+2. **Camera color detection** locates red and green obstacles in the image and steers around them when they are close.
+3. **Orange and blue line counting** tracks course turns/laps using a boolean flag-based counter.
 
-In the current repository, these files show the low-level building blocks for motor feedback and control, steering commands, and serial communication. The main Arduino sketch is a motor test program. The repository does not currently show a complete camera/LiDAR perception pipeline or a complete autonomous navigation program for the two challenge rounds, so this section does not claim that those functions are implemented.
+The Raspberry Pi runs perception and decision-making. It sends motor speed, steering error, and PID gains to the Arduino. The Arduino turns the steering error into a servo angle and applies the requested motor speed.
+
+## LiDAR: scan points and steering error
+
+### Polar to Cartesian conversion
+
+The LiDAR provides each valid measurement as a distance `r` in millimeters and an angle `θ` in degrees. In `lidar.py`, each scan point is transformed to the car-relative Cartesian coordinate system:
+
+```python
+x = r * cos(θ)
+y = -r * sin(θ)
+```
+
+The angle is converted from degrees to radians before calling Python's `sin` and `cos` functions. The negative sign on `y` defines the coordinate orientation used by this program. The resulting `(x, y)` points are stored as the latest scan coordinates. In this code's frame, points with `y > 0` are treated as being in front of the car; negative `x` is the left side and positive `x` is the right side.
+
+> **Figure placeholder — LiDAR coordinate frame**  
+> Add a top-down picture of the car showing the LiDAR origin, positive `x` to the right, positive `y` forward, a measured point at distance `r`, angle `θ`, and the projections `x = r cos(θ)` and `y = -r sin(θ)`. Label the vehicle's left and right sides to match the signs used in `lidar.py`.
+>
+> `![Top view of car and LiDAR coordinate axes](images/lidar-coordinate-frame.png)`
+
+### Obstacle detection
+
+`lidar_obstacle()` checks whether any point falls in a rectangular region directly ahead:
+
+```text
+-55 mm < x < 55 mm
+ 40 mm < y < 250 mm
+```
+
+If at least one point is inside this region, the function reports a forward obstacle. `left_obstacle()` and `right_obstacle()` test the left and right halves of a similar forward region.
+
+### LiDAR steering error from left/right averages
+
+`lidar_error()` considers points in front of the car (`y > 0`) and separates them by side:
+
+- Left set: points with `x < 0`
+- Right set: points with `x > 0`
+
+For each point, the program calculates its distance from the LiDAR origin using the Euclidean distance (hypotenuse):
+
+```text
+d = sqrt(x² + y²)
+```
+
+It calculates the average distance on each side, then subtracts the left average from the right average:
+
+```text
+left_average  = average(distance of left-side points)
+right_average = average(distance of right-side points)
+steering_error = right_average - left_average
+```
+
+This gives a signed correction based on the difference in nearby space on either side. The error is sent to the Arduino, where the steering PID uses it to adjust the servo. If either side has no points, `lidar_error()` returns `None`; callers should handle that case before building a serial command.
+
+## Camera: red and green obstacle avoidance
+
+### HSV masks
+
+`camera.py` captures frames with Picamera2, rotates each image 180 degrees, and converts RGB pixels to HSV with OpenCV. For each configured color, it creates a binary mask using the lower and upper HSV thresholds in `colors_hsv_config.json`:
+
+```python
+mask = cv2.inRange(hsv, lower, upper)
+```
+
+Pixels within the configured color range are selected in the mask; other pixels are excluded. A 5×5 morphological opening removes small isolated regions/noise. The current obstacle decision uses the red and green masks. The camera code also displays the frame and color masks in OpenCV windows for tuning and observation.
+
+> **Figure placeholder — camera color masks**  
+> Add a screenshot showing the camera view and the red/green binary masks generated by OpenCV. Include an example with a detected red obstacle and another with a detected green obstacle.
+>
+> `![Camera view and red/green HSV masks](images/camera-color-masks.png)`
+
+### Object location and image-center error
+
+`camera_obstacle()` finds contours in the red and green masks, ignores contours smaller than `min_area`, and selects the largest remaining contour. It calculates that contour's horizontal center (`center_x`) and compares it with the image center:
+
+```text
+camera_error = center_x - image_center_x
+```
+
+The returned pair is `(camera_error, color)`. This error indicates whether the obstacle appears left or right of the center of the camera image. The controller uses the position error to keep the detected obstacle near the chosen center line of view while approaching/aligning.
+
+### Close obstacle steering choice
+
+In `main.py`, when a red/green obstacle has been detected and LiDAR also reports an obstacle in the forward zone, the controller selects a strong avoidance direction based on the color:
+
+- **Red obstacle:** steer right.
+- **Green obstacle:** steer left.
+
+The source expresses these choices as large signed steering errors (`+1000` for red and `-1000` for green), which the Arduino PID/servo limits constrain to the available steering range. When the close-obstacle condition is absent, the controller uses the camera image error or the LiDAR steering error instead.
+
+## Course turns and lap counting with colored lines
+
+The course navigation logic counts orange and blue line detections to determine turn/lap progress. The intended counter is **boolean flag-based**: a detected line changes a flag/state so one physical line crossing is counted once, rather than incrementing on every camera frame while the line remains visible. After the line is no longer detected, the flag is reset/armed so a later crossing can be counted. Orange and blue detections can be tracked separately to identify the sequence of course markers and decide when to execute the corresponding turn.
+
+A simplified state pattern is:
+
+```text
+line not detected → armed
+line detected while armed → count once, disarm
+line remains detected → do not count again
+line clears → re-arm for the next crossing
+```
+
+The supplied `camera.py` configures HSV thresholds for orange and blue, but its current `camera_obstacle()` function only searches for red and green. The supplied `main.py` also does not contain the orange/blue line counters or turn-state logic. Add or link the implementation here when that navigation code is included, and document the exact marker sequence and turn actions used by the vehicle.
+
+## Data flow
+
+```text
+LiDAR scan ── polar-to-Cartesian points ── obstacle zone + left/right averages ─┐
+                                                                               ├─ main.py ── UART command ── Arduino PID/servo + motor
+Camera frame ── HSV masks ── red/green object center + color ──────────────────┤
+Camera frame ── orange/blue line state/counting (navigation logic) ────────────┘
+```
+
+## Related source files
+
+- `py_code/lidar.py` — coordinate conversion, obstacle zones, and left/right distance error.
+- `py_code/camera.py` — HSV masks, contour selection, and red/green image-center error.
+- `py_code/colors_hsv_config.json` — HSV bounds for red, green, blue, orange, and magenta.
+- `py_code/main.py` — combines camera and LiDAR results and sends the steering command.
+- `cpp_code/main/steering.cpp` — applies PID steering correction and commands the servo.
 
 ### Hardware documentation
 
