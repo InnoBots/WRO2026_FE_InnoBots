@@ -183,20 +183,16 @@ The steering module attaches the servo and provides an interface for requesting 
 
 The UART module initializes serial communication at **115200 baud**. It supports sending text lines and reading incoming text until a newline character.
 
+## Competition videos
+
+Here are two videos showing our robot on the course during the WRO Future Engineers 2026 challenges.
+
+- **Open Challenge:** [Watch our run on YouTube](https://youtu.be/mYlt0tB4ghc)
+- **Obstacle Challenge:** [Watch our run on YouTube](https://youtu.be/6qGnksUF9Dk)
+
 ## 4. Engineering references
 
-This section brings together the official description of the WRO Future Engineers 2026 challenges and documentation for programming concepts that appear in the robot's Arduino code. These links are provided to help readers understand the challenge and the technologies used in the project.
-
-### WRO Future Engineers 2026 challenge
-
-The 2026 category has two autonomous-driving challenges. Each attempt is a time-attack run: one vehicle drives on the field at a time, and the objective is to complete the required course autonomously within the round time.
-
-- **Open Challenge:** The vehicle must complete three laps. The positions of the inner track walls are randomized, changing the track layout between rounds. The starting position and driving direction can also change. There are no traffic-sign pillars in this challenge, and the vehicle must finish by stopping autonomously in the designated finish section.
-- **Obstacle Challenge:** The vehicle must complete three laps while responding to randomly positioned traffic-sign pillars. A red pillar indicates that the vehicle must follow the right side of the lane; a green pillar indicates that it must follow the left side. The vehicle must avoid moving the pillars. After completing the laps, it must locate the parking area and perform a parallel-parking manoeuvre.
-
-Official documents:
-- [WRO Future Engineers 2026 — Official Game Rules (PDF)](https://wro-association.org/wp-content/uploads/2026/01/WRO-2026-Future-Engineers-Self-Driving-Cars-General-Rules-FINAL.pdf)
-- [WRO 2026 Season](https://wro-association.org/competition/2026-season/)
+The links below document programming concepts used in the robot's Arduino code and provide references for the hardware and electrical design.
 
 ### Programming concepts visible in our code
 
